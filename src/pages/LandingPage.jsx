@@ -1,166 +1,184 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/Button.jsx";
+import { Link } from "react-router-dom";
+
+const features = [
+  {
+    icon: "🗺️",
+    title: "AI Workflow Builder",
+    description: "Select a goal and get a step-by-step AI workflow with the best tool for each step. Stop guessing, start building.",
+    href: "/workflows",
+    cta: "Explore Workflows",
+  },
+  {
+    icon: "🧠",
+    title: "AI Model Intelligence Hub",
+    description: "Compare GPT-4o, Claude, Gemini, DeepSeek and more by benchmark scores, pricing, and real use cases.",
+    href: "/models",
+    cta: "Compare Models",
+  },
+  {
+    icon: "⚡",
+    title: "Stack Explorer",
+    description: "Discover curated AI tool combinations for your role. Developer, Creator, Designer, Marketer — find your stack.",
+    href: "/stacks",
+    cta: "Find My Stack",
+  },
+  {
+    icon: "📋",
+    title: "Prompt Library",
+    description: "Battle-tested prompts tied to specific tools and use cases. Copy, customize, and get results immediately.",
+    href: "/prompts",
+    cta: "Browse Prompts",
+  },
+];
+
+const stats = [
+  { value: "30+", label: "AI Tools" },
+  { value: "6", label: "LLM Models" },
+  { value: "5", label: "Workflows" },
+  { value: "11+", label: "Prompts" },
+];
+
+const categories = [
+  "AI Chatbots", "Coding Assistants", "Image Generation",
+  "Video Generation", "AI Research", "Productivity Tools",
+  "Presentation Tools", "Voice & Audio", "Automation Tools", "AI Writing",
+];
 
 export default function LandingPage() {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const elements = document.querySelectorAll(".fade-in");
-    elements.forEach((el, index) => {
-      setTimeout(() => {
-        el.classList.add("opacity-100");
-      }, index * 200);
-    });
-  }, []);
-
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
+
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0f] via-[#1a1a2e] to-[#0f0f1a]">
-          {/* Dot grid pattern */}
-          <div className="absolute inset-0">
-            <div
-              className="absolute inset-0"
-              style={{
-                backgroundImage:
-                  "radial-gradient(circle, rgba(59, 130, 246, 0.15) 1px, transparent 1px)",
-                backgroundSize: "30px 30px",
-              }}
-            />
+      <section className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-24 px-4">
+        <div className="max-w-5xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 bg-[#FF6B35]/20 border border-[#FF6B35]/30 text-[#FF6B35] px-4 py-2 rounded-full text-sm font-medium mb-8">
+            🚀 The Smart Way to Use AI in 2026
           </div>
-
-          {/* Sphere grid overlay */}
-          <div className="absolute inset-0 opacity-80">
-            <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <pattern
-                  id="sphereGrid"
-                  width="60"
-                  height="60"
-                  patternUnits="userSpaceOnUse"
-                >
-                  <circle
-                    cx="30"
-                    cy="30"
-                    r="1.5"
-                    fill="rgba(59, 130, 246, 0.4)"
-                  />
-                  <circle
-                    cx="30"
-                    cy="30"
-                    r="8"
-                    fill="none"
-                    stroke="rgba(59, 130, 246, 0.2)"
-                    strokeWidth="0.5"
-                  />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#sphereGrid)" />
-            </svg>
-          </div>
-
-          {/* Animated glowing spheres */}
-          <div className="absolute top-1/4 left-1/4 w-125 h-[500px] bg-blue-600/10 rounded-full blur-[100px] animate-pulse" />
-          <div
-            className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[100px] animate-pulse"
-            style={{ animationDelay: "1s" }}
-          />
-          <div
-            className="absolute top-1/2 right-1/3 w-[300px] h-[300px] bg-orange-600/10 rounded-full blur-[100px] animate-pulse"
-            style={{ animationDelay: "2s" }}
-          />
-
-          {/* Vignette overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
-        </div>
-
-        {/* Content */}
-        <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
-          <h1 className="fade-in opacity-0 transition-opacity duration-1000 text-5xl md:text-7xl lg:text-[72px] font-bold text-white mb-6 leading-tight">
-            Unlock The Power of
-            <br />
-            <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-orange-500 bg-clip-text text-transparent">
-              Artificial Intelligence
-            </span>
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            Stop Asking ChatGPT
+            <span className="text-[#FF6B35]"> Which AI To Use.</span>
           </h1>
-          <p className="fade-in opacity-0 transition-opacity duration-1000 delay-200 text-xl md:text-3xl lg:text-[28px] text-white/90 mb-12 leading-relaxed">
-            Your ultimate platform for AI tool discovery, comparison, and
-            collaborative learning
+          <p className="text-xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
+            AI Nexus Pro gives you structured workflows, model comparisons, curated stacks, and ready-to-use prompts — everything ChatGPT can't give you in one place.
           </p>
-          <Button
-            size="lg"
-            onClick={() => navigate("/home")}
-            className="fade-in opacity-0 transition-opacity duration-1000 delay-400 bg-[#FF6B35] hover:bg-[#FF5722] text-white text-lg px-12 py-7 h-[60px] rounded-lg shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer"
-          >
-            Explore AI Tools →
-          </Button>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 rounded-full border-2 border-white/50 flex items-start justify-center p-2">
-            <div className="w-1 h-3 bg-white/50 rounded-full animate-pulse" />
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/workflows"
+              className="bg-[#FF6B35] hover:bg-[#FF5722] text-white px-8 py-4 rounded-2xl font-bold text-lg transition-colors">
+              Explore Workflows →
+            </Link>
+            <Link to="/home"
+              className="border border-gray-600 hover:border-gray-400 text-gray-300 hover:text-white px-8 py-4 rounded-2xl font-bold text-lg transition-colors">
+              Browse AI Tools
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Features Preview Section */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-4xl md:text-5xl font-bold text-[#3B82F6] text-center mb-16">
-            Why Choose AI Nexus Pro?
-          </h2>
+      {/* Stats Section */}
+      <section className="bg-[#FF6B35] py-12 px-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map(stat => (
+              <div key={stat.label} className="text-center text-white">
+                <div className="text-4xl font-bold mb-1">{stat.value}</div>
+                <div className="text-white/80 font-medium">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
+      {/* Features Section */}
+      <section className="py-20 px-4 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-14">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Everything You Need to Master AI</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">Four powerful features that go beyond what any single AI chatbot can tell you.</p>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Feature 1 */}
-            <div className="group bg-white p-8 rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100">
-              <div className="text-6xl mb-4">🔍</div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                Smart Discovery
-              </h3>
-              <p className="text-gray-600 text-lg leading-relaxed">
-                Search and filter 50+ AI tools by category, features, and
-                pricing
-              </p>
-            </div>
-
-            {/* Feature 2 */}
-            <div className="group bg-white p-8 rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100">
-              <div className="text-6xl mb-4">⚖️</div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                Side-by-Side Comparison
-              </h3>
-              <p className="text-gray-600 text-lg leading-relaxed">
-                Compare up to 3 tools feature-by-feature in real-time
-              </p>
-            </div>
-
-            {/* Feature 3 */}
-            <div className="group bg-white p-8 rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100">
-              <div className="text-6xl mb-4">🎓</div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                Integrated Tutorials
-              </h3>
-              <p className="text-gray-600 text-lg leading-relaxed">
-                Access curated YouTube tutorials for every tool
-              </p>
-            </div>
-
-            {/* Feature 4 */}
-            <div className="group bg-white p-8 rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100">
-              <div className="text-6xl mb-4">🤖</div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                Personalized Guidance
-              </h3>
-              <p className="text-gray-600 text-lg leading-relaxed">
-                Chat with AI to find the perfect tool for your needs
-              </p>
-            </div>
+            {features.map(feature => (
+              <div key={feature.title}
+                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all p-8 border border-gray-100 hover:border-[#FF6B35] group">
+                <div className="text-5xl mb-4">{feature.icon}</div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-[#FF6B35] transition-colors">{feature.title}</h3>
+                <p className="text-gray-600 mb-6 leading-relaxed">{feature.description}</p>
+                <Link to={feature.href}
+                  className="inline-flex items-center gap-2 bg-[#FF6B35] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#FF5722] transition-colors">
+                  {feature.cta} →
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
       </section>
+
+      {/* Categories Section */}
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-14">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">10 AI Tool Categories</h2>
+            <p className="text-xl text-gray-600">Top rated tools across every major AI category.</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+            {categories.map(cat => (
+              <Link to="/home" key={cat}
+                className="bg-gray-50 hover:bg-[#FF6B35]/5 border border-gray-200 hover:border-[#FF6B35] rounded-2xl p-4 text-center transition-all group">
+                <p className="font-semibold text-gray-700 group-hover:text-[#FF6B35] transition-colors text-sm">{cat}</p>
+              </Link>
+            ))}
+          </div>
+          <div className="text-center">
+            <Link to="/home"
+              className="inline-flex items-center gap-2 border-2 border-[#FF6B35] text-[#FF6B35] px-8 py-3 rounded-2xl font-bold hover:bg-[#FF6B35] hover:text-white transition-colors">
+              Browse All Tools →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section className="py-20 px-4 bg-gray-50">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-14">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
+            <p className="text-xl text-gray-600">Three steps to find the perfect AI solution for any problem.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { step: "01", title: "Pick Your Goal", desc: "Choose from workflows like Launch a YouTube Channel, Build a SaaS, or Automate Freelancing." },
+              { step: "02", title: "Get Your Stack", desc: "See the exact AI tools for each step, with prompts and tips on how to use them effectively." },
+              { step: "03", title: "Compare & Choose", desc: "Not sure which LLM to use? Compare models by benchmarks, pricing, and task fit side by side." },
+            ].map(item => (
+              <div key={item.step} className="text-center">
+                <div className="w-16 h-16 bg-[#FF6B35] text-white rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                  {item.step}
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
+                <p className="text-gray-600">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 px-4 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-4xl font-bold mb-4">Ready to Work Smarter with AI?</h2>
+          <p className="text-xl text-gray-300 mb-10">Join thousands of developers, creators, and professionals using AI Nexus Pro.</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/workflows"
+              className="bg-[#FF6B35] hover:bg-[#FF5722] text-white px-8 py-4 rounded-2xl font-bold text-lg transition-colors">
+              Start with Workflows →
+            </Link>
+            <Link to="/models"
+              className="border border-gray-600 hover:border-gray-400 text-gray-300 hover:text-white px-8 py-4 rounded-2xl font-bold text-lg transition-colors">
+              Compare AI Models
+            </Link>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }

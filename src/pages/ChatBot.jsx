@@ -1,244 +1,178 @@
 import { useState, useRef, useEffect } from "react";
-import { Card } from "@/components/ui/Card.jsx";
-import { Button } from "@/components/ui/Button.jsx";
-import { Textarea } from "@/components/ui/Textarea.jsx";
 
-const useCaseGuides = [
-  {
-    id: "1",
-    icon: "✍️",
-    title: "ChatGPT for Content Writing",
-    brief: "Generate blog posts, articles, and marketing copy",
-  },
-  {
-    id: "2",
-    icon: "🎨",
-    title: "Midjourney for Design",
-    brief: "Create professional graphics and illustrations",
-  },
-  {
-    id: "3",
-    icon: "💻",
-    title: "GitHub Copilot for Coding",
-    brief: "Speed up development with AI suggestions",
-  },
-  {
-    id: "4",
-    icon: "📢",
-    title: "Jasper for Marketing",
-    brief: "Create compelling ad copy and emails",
-  },
+const suggestions = [
+  "What's the best AI for coding?",
+  "Which LLM is cheapest for production?",
+  "How do I build a YouTube channel with AI?",
+  "What tools do content creators use?",
+  "Compare ChatGPT vs Claude vs Gemini",
+  "Best free AI tools for students?",
 ];
 
-const initialMessages = [
-  {
-    id: "1",
-    role: "bot",
-    content:
-      "Hello! I'm your AI assistant. Ask me anything about AI tools, or select a use case guide to learn more.",
-  },
-];
+const systemPrompt = `You are an AI Guide for AI Nexus Pro, a platform that helps users discover and use AI tools effectively. 
+
+You help users with:
+- Recommending the best AI tools for specific tasks
+- Explaining differences between AI models (GPT-4o, Claude, Gemini, DeepSeek, Llama etc)
+- Suggesting AI workflows for goals like content creation, coding, freelancing
+- Advising on AI tool stacks for different roles (developer, designer, marketer, student)
+- Answering questions about prompt engineering and getting better results from AI
+
+The platform has these sections:
+- AI Tools Directory: 30+ top AI tools across 10 categories
+- Workflow Builder: Step-by-step AI workflows for specific goals
+- Model Hub: LLM comparisons with benchmark scores
+- Stack Explorer: Curated tool combinations by role
+- Prompt Library: Ready-to-use prompts for specific tools
+
+Always be helpful, specific, and practical. When recommending tools, mention why they fit the user's need. Keep responses concise but complete. Use bullet points for lists.`;
 
 export default function ChatBot() {
-  const [messages, setMessages] = useState(initialMessages);
-  const [inputValue, setInputValue] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const [messages, setMessages] = useState([
+    {
+      role: "assistant",
+      content: "Hi! I'm your AI Guide 👋 I can help you find the right AI tools, compare models, suggest workflows, and answer anything AI-related. What do you need help with today?",
+    },
+  ]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const bottomRef = useRef(null);
 
   useEffect(() => {
-    scrollToBottom();
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSend = () => {
-    if (!inputValue.trim() || isTyping) return;
+  const sendMessage = async (text) => {
+    const userMessage = text || input.trim();
+    if (!userMessage) return;
 
-    const userMessage = {
-      id: Date.now().toString(),
-      role: "user",
-      content: inputValue,
-    };
+    setInput("");
+    setMessages(prev => [...prev, { role: "user", content: userMessage }]);
+    setLoading(true);
 
-    setMessages((prev) => [...prev, userMessage]);
-    setInputValue("");
-    setIsTyping(true);
+    try {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-6",
+          max_tokens: 1000,
+          system: systemPrompt,
+          messages: [
+            ...messages.filter(m => m.role !== "system").map(m => ({
+              role: m.role,
+              content: m.content,
+            })),
+            { role: "user", content: userMessage },
+          ],
+        }),
+      });
 
-    setTimeout(() => {
-      const botMessage = {
-        id: (Date.now() + 1).toString(),
-        role: "bot",
-        content: generateBotResponse(inputValue),
-      };
-      setMessages((prev) => [...prev, botMessage]);
-      setIsTyping(false);
-    }, 1000);
-  };
-
-  const generateBotResponse = (userInput) => {
-    const input = userInput.toLowerCase();
-
-    if (input.includes("marketing") || input.includes("content")) {
-      return "For marketing content, I recommend Jasper AI or Copy.ai. Both specialize in marketing copy with templates for ads, emails, and social media.";
-    } else if (
-      input.includes("image") ||
-      input.includes("art") ||
-      input.includes("design")
-    ) {
-      return "For image generation, Midjourney and DALL-E are the top choices. Midjourney excels at artistic images, while DALL-E is better for realistic images.";
-    } else if (
-      input.includes("code") ||
-      input.includes("programming") ||
-      input.includes("developer")
-    ) {
-      return "For coding assistance, try GitHub Copilot or ChatGPT with code prompts.";
-    } else if (input.includes("video") || input.includes("animation")) {
-      return "For video generation, Pictory and Synthesia are excellent AI tools.";
-    } else if (
-      input.includes("music") ||
-      input.includes("audio") ||
-      input.includes("sound")
-    ) {
-      return "For music and audio, try AIVA or Soundraw to generate compositions.";
-    } else {
-      return "That's a great question! AI tools can help with content creation, image generation, code assistance, and more. What specific task are you looking to accomplish?";
+      const data = await response.json();
+      const reply = data.content?.[0]?.text || "Sorry, I couldn't get a response. Please try again.";
+      setMessages(prev => [...prev, { role: "assistant", content: reply }]);
+    } catch {
+      setMessages(prev => [...prev, {
+        role: "assistant",
+        content: "Sorry, something went wrong. Please check your connection and try again.",
+      }]);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleGuideClick = (guide) => {
-    const message = `Tell me about ${guide.title.toLowerCase()}`;
-    setInputValue(message);
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-[#3B82F6] mb-4">
-            AI Assistant
-          </h1>
-          <p className="text-xl text-gray-600">
-            Get personalized recommendations and learn about real-world AI
-            applications
-          </p>
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      {/* Header */}
+      <div className="bg-white border-b px-4 py-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">AI Guide</h1>
+          <p className="text-gray-600">Ask me anything about AI tools, models, workflows, or prompts.</p>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="flex-1 max-w-4xl mx-auto w-full px-4 py-6 flex flex-col gap-4">
+
+        {/* Suggestions — only show at start */}
+        {messages.length === 1 && (
           <div>
-            <h2 className="text-3xl font-bold text-[#3B82F6] mb-6">
-              Real-World AI Applications
-            </h2>
-
-            <div className="space-y-4">
-              {useCaseGuides.map((guide) => (
-                <Card
-                  key={guide.id}
-                  className="p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer border-0"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="text-4xl">{guide.icon}</div>
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">
-                        {guide.title}
-                      </h3>
-                      <p className="text-gray-600 mb-4">{guide.brief}</p>
-                      <Button
-                        onClick={() => handleGuideClick(guide)}
-                        className="bg-[#FF6B35] hover:bg-[#FF5722] text-white"
-                      >
-                        Ask Chatbot
-                      </Button>
-                    </div>
-                  </div>
-                </Card>
+            <p className="text-sm text-gray-500 mb-3 font-medium">Try asking:</p>
+            <div className="flex flex-wrap gap-2">
+              {suggestions.map(s => (
+                <button key={s} onClick={() => sendMessage(s)}
+                  className="bg-white border border-gray-200 hover:border-[#FF6B35] hover:text-[#FF6B35] text-gray-600 text-sm px-4 py-2 rounded-full transition-colors">
+                  {s}
+                </button>
               ))}
             </div>
           </div>
+        )}
 
-          <div className="lg:sticky lg:top-24 lg:h-[calc(100vh-12rem)]">
-            <Card className="flex flex-col h-full bg-white rounded-xl shadow-xl border-0 overflow-hidden">
-              <div className="p-6 border-b bg-gradient-to-r from-[#FF6B35] to-[#3B82F6]">
-                <h2 className="text-2xl font-bold text-white">AI Assistant</h2>
-                <p className="text-white/90">Ask me anything about AI tools</p>
-              </div>
-
-              <div className="flex-1 overflow-y-auto p-6 bg-gray-50 space-y-4">
-                {messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={`flex ${
-                      message.role === "user" ? "justify-end" : "justify-start"
-                    }`}
-                  >
-                    <div className="flex items-start gap-2 max-w-[70%]">
-                      {message.role === "bot" && (
-                        <div className="text-2xl">🤖</div>
-                      )}
-                      <div
-                        className={`p-4 rounded-2xl ${
-                          message.role === "user"
-                            ? "bg-[#3B82F6] text-white rounded-tr-none"
-                            : "bg-gray-200 text-gray-900 rounded-tl-none"
-                        }`}
-                      >
-                        {message.content}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-
-                {isTyping && (
-                  <div className="flex justify-start">
-                    <div className="flex items-start gap-2 max-w-[70%]">
-                      <div className="text-2xl">🤖</div>
-                      <div className="bg-gray-200 text-gray-900 p-4 rounded-2xl rounded-tl-none">
-                        <div className="flex gap-1">
-                          <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" />
-                          <span
-                            className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
-                            style={{ animationDelay: "150ms" }}
-                          />
-                          <span
-                            className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
-                            style={{ animationDelay: "300ms" }}
-                          />
-                        </div>
-                      </div>
-                    </div>
+        {/* Messages */}
+        <div className="flex-1 space-y-4">
+          {messages.map((msg, index) => (
+            <div key={index} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+              <div className={`max-w-[80%] rounded-2xl px-5 py-4 ${
+                msg.role === "user"
+                  ? "bg-[#FF6B35] text-white rounded-br-sm"
+                  : "bg-white text-gray-800 shadow-md border border-gray-100 rounded-bl-sm"
+              }`}>
+                {msg.role === "assistant" && (
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-lg">🧠</span>
+                    <span className="text-xs font-semibold text-[#FF6B35]">AI Guide</span>
                   </div>
                 )}
-
-                <div ref={messagesEndRef} />
+                <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
               </div>
+            </div>
+          ))}
 
-              <div className="p-4 border-t bg-white">
-                <div className="flex gap-2">
-                  <Textarea
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && !e.shiftKey) {
-                        e.preventDefault();
-                        handleSend();
-                      }
-                    }}
-                    placeholder="Type your question here..."
-                    className="min-h-[60px] max-h-[120px] resize-none border-2 focus:border-[#0EA5E9]"
-                    disabled={isTyping}
-                  />
-                  <Button
-                    onClick={handleSend}
-                    disabled={!inputValue.trim() || isTyping}
-                    className="bg-[#FF6B35] hover:bg-[#FF5722] text-white h-15 px-6"
-                  >
-                    <span className="text-xl">✈️</span>
-                  </Button>
+          {loading && (
+            <div className="flex justify-start">
+              <div className="bg-white rounded-2xl rounded-bl-sm px-5 py-4 shadow-md border border-gray-100">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-lg">🧠</span>
+                  <span className="text-xs font-semibold text-[#FF6B35]">AI Guide</span>
+                </div>
+                <div className="flex gap-1">
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></div>
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></div>
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></div>
                 </div>
               </div>
-            </Card>
-          </div>
+            </div>
+          )}
+          <div ref={bottomRef} />
+        </div>
+
+        {/* Input */}
+        <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-4 flex gap-3 items-end">
+          <textarea
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Ask about AI tools, models, workflows..."
+            rows={1}
+            className="flex-1 resize-none focus:outline-none text-gray-700 placeholder-gray-400 text-sm leading-relaxed"
+          />
+          <button
+            onClick={() => sendMessage()}
+            disabled={!input.trim() || loading}
+            className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors ${
+              input.trim() && !loading
+                ? "bg-[#FF6B35] text-white hover:bg-[#FF5722]"
+                : "bg-gray-100 text-gray-400 cursor-not-allowed"
+            }`}>
+            Send
+          </button>
         </div>
       </div>
     </div>

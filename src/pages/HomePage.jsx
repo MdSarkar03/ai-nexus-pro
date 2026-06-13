@@ -1,187 +1,156 @@
-import { useState, useMemo } from "react";
-import { aiTools, categories } from "@/lib/ai-tools-data.js";
-import { Input } from "@/components/ui/Input.jsx";
-import { Button } from "@/components/ui/Button.jsx";
-import { Card } from "@/components/ui/Card.jsx";
-import { cn } from "@/lib/utils.js";
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+const categories = [
+  "All", "AI Chatbots", "AI Writing Tools", "Coding Assistants",
+  "Image Generation", "Video Generation", "AI Research",
+  "Productivity Tools", "Presentation Tools", "Voice & Audio Tools", "Automation Tools"
+];
 
 export default function HomePage() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [tools, setTools] = useState([]);
+  const [filtered, setFiltered] = useState([]);
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [activePricing, setActivePricing] = useState("All");
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  const filteredTools = useMemo(() => {
-    return aiTools.filter((tool) => {
-      const matchesSearch =
-        tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        tool.description.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCategory =
-        selectedCategory === "All" || tool.category === selectedCategory;
-      return matchesSearch && matchesCategory;
-    });
-  }, [searchQuery, selectedCategory]);
+  useEffect(() => {
+    axios.get(`${API}/api/tools`)
+      .then(res => { setTools(res.data); setFiltered(res.data); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, []);
 
-  const getCategoryColor = (category) => {
-    const colors = {
-      "Text Generation": "bg-purple-100 text-purple-700",
-      "Image Generation": "bg-pink-100 text-pink-700",
-      "Video Generation": "bg-red-100 text-red-700",
-      "Audio Tools": "bg-green-100 text-green-700",
-      "Code Assistants": "bg-blue-100 text-blue-700",
-      Productivity: "bg-yellow-100 text-yellow-700",
-      Research: "bg-teal-100 text-teal-700",
-    };
-    return colors[category] || "bg-gray-100 text-gray-700";
-  };
+  useEffect(() => {
+    let result = tools;
+    if (activeCategory !== "All") result = result.filter(t => t.category === activeCategory);
+    if (activePricing !== "All") result = result.filter(t => t.pricing === activePricing);
+    if (search) result = result.filter(t =>
+      t.name.toLowerCase().includes(search.toLowerCase()) ||
+      t.description.toLowerCase().includes(search.toLowerCase()) ||
+      t.tags?.some(tag => tag.toLowerCase().includes(search.toLowerCase()))
+    );
+    setFiltered(result);
+  }, [activeCategory, activePricing, search, tools]);
 
-  const getPricingColor = (pricing) => {
-    const colors = {
-      Free: "bg-green-100 text-green-700",
-      Freemium: "bg-blue-100 text-blue-700",
-      Paid: "bg-orange-100 text-orange-700",
-    };
-    return colors[pricing] || "bg-gray-100 text-gray-700";
-  };
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="w-12 h-12 border-4 border-[#FF6B35] border-t-transparent rounded-full animate-spin mx-auto"></div>
+    </div>
+  );
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-[#3B82F6] mb-4">
-            Discover AI Tools
-          </h1>
-          <p className="text-xl text-gray-600">
-            Explore the latest and greatest AI tools for your needs
-          </p>
-        </div>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 py-10">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 mb-3">AI Tools Directory</h1>
+            <p className="text-gray-600 text-lg">Top rated AI tools of 2026, organized by category.</p>
+          </div>
 
-        <div className="mb-6">
-          <div className="relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl">
-              🔍
-            </span>
-            <Input
+          {/* Search */}
+          <div className="relative max-w-2xl mx-auto">
+            <input
               type="text"
-              placeholder="Search for AI tools..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-14 h-[60px] text-lg border-2 focus:border-[#0EA5E9] rounded-lg"
+              placeholder="Search tools by name, category, or use case..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-2xl focus:outline-none focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] bg-white"
             />
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">🔍</span>
           </div>
         </div>
+      </div>
 
-        <div className="mb-6 overflow-x-auto pb-2">
-          <div className="flex gap-3 min-w-max">
-            {categories.map((category) => (
-              <Button
-                key={category}
-                variant={selectedCategory === category ? "default" : "outline"}
-                onClick={() => setSelectedCategory(category)}
-                className={cn(
-                  "rounded-full px-6 transition-all duration-200",
-                  selectedCategory === category
-                    ? "bg-[#FF6B35] hover:bg-[#FF5722] text-white"
-                    : "hover:bg-gray-100"
-                )}
-              >
-                {category}
-              </Button>
-            ))}
-          </div>
+      <div className="max-w-7xl mx-auto px-4 py-8">
+
+        {/* Pricing Filter */}
+        <div className="flex gap-2 mb-4">
+          {["All", "Free", "Freemium", "Paid"].map(price => (
+            <button key={price} onClick={() => setActivePricing(price)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${activePricing === price ? "bg-gray-900 text-white" : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"}`}>
+              {price}
+            </button>
+          ))}
         </div>
 
-        <p className="text-gray-500 mb-6">
-          Showing {filteredTools.length} tool
-          {filteredTools.length !== 1 ? "s" : ""}
-        </p>
+        {/* Category Filter */}
+        <div className="flex gap-2 flex-wrap mb-8 overflow-x-auto pb-2">
+          {categories.map(cat => (
+            <button key={cat} onClick={() => setActiveCategory(cat)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors shrink-0 ${activeCategory === cat ? "bg-[#FF6B35] text-white" : "bg-white text-gray-600 border border-gray-200 hover:border-[#FF6B35] hover:text-[#FF6B35]"}`}>
+              {cat}
+            </button>
+          ))}
+        </div>
 
-        {filteredTools.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredTools.map((tool) => (
-              <Card
-                key={tool.id}
-                className="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 p-6 border border-gray-100 cursor-pointer"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <img
-                    src={tool.logo || "/placeholder.svg"}
-                    alt={`${tool.name} logo`}
-                    className="w-20 h-20 rounded-lg object-contain"
-                  />
-                  <span
-                    className={cn(
-                      "text-xs px-3 py-1 rounded-full font-medium",
-                      getCategoryColor(tool.category)
-                    )}
-                  >
-                    {tool.category}
-                  </span>
-                </div>
+        {/* Results Count */}
+        <p className="text-gray-500 text-sm mb-6">{filtered.length} tools found</p>
 
-                <h3 className="text-2xl font-bold text-gray-900 mb-2 line-clamp-2">
-                  {tool.name}
-                </h3>
-                <p className="text-gray-600 mb-4 line-clamp-3 leading-relaxed">
-                  {tool.description}
-                </p>
+        {/* Tools Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filtered.map(tool => (
+            <div key={tool._id}
+              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all border border-gray-100 hover:border-[#FF6B35] p-6 group flex flex-col">
 
-                <div className="mb-4 space-y-1">
-                  {tool.features.slice(0, 3).map((feature, idx) => (
-                    <div key={idx} className="flex items-start gap-2">
-                      <span className="text-green-500 text-sm">✓</span>
-                      <span className="text-sm text-gray-600">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex items-center justify-between mb-4">
-                  <span
-                    className={cn(
-                      "text-xs px-3 py-1 rounded-full font-medium",
-                      getPricingColor(tool.pricing)
-                    )}
-                  >
-                    {tool.pricing}
-                  </span>
-                  <div className="flex items-center gap-1">
-                    <span className="text-yellow-500">
-                      {"★".repeat(Math.floor(tool.rating))}
-                    </span>
-                    <span className="text-sm text-gray-600">{tool.rating}</span>
+              {/* Top Row */}
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-[#FF6B35]/10 rounded-xl flex items-center justify-center text-2xl font-bold text-[#FF6B35]">
+                    {tool.name.charAt(0)}
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 text-lg group-hover:text-[#FF6B35] transition-colors">{tool.name}</h3>
+                    <p className="text-gray-500 text-xs">{tool.category}</p>
                   </div>
                 </div>
+                <span className={`text-xs font-semibold px-2 py-1 rounded-full shrink-0 ${
+                  tool.pricing === "Free" ? "bg-green-100 text-green-700" :
+                  tool.pricing === "Freemium" ? "bg-blue-100 text-blue-700" :
+                  "bg-gray-100 text-gray-600"
+                }`}>
+                  {tool.pricing}
+                </span>
+              </div>
 
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {tool.tags.map((tag, idx) => (
-                    <span
-                      key={idx}
-                      className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+              {/* Description */}
+              <p className="text-gray-600 text-sm mb-4 flex-1 line-clamp-2">{tool.description}</p>
 
-                <button className="w-full text-[#3B82F6] hover:text-[#FF6B35] font-medium transition-colors">
-                  View Details →
-                </button>
-              </Card>
-            ))}
-          </div>
-        ) : (
+              {/* Rating */}
+              <div className="flex items-center gap-1 mb-4">
+                {[1,2,3,4,5].map(star => (
+                  <span key={star} className={`text-sm ${star <= Math.round(tool.rating) ? "text-yellow-400" : "text-gray-200"}`}>★</span>
+                ))}
+                <span className="text-xs text-gray-500 ml-1">{tool.rating}/5</span>
+              </div>
+
+              {/* Tags */}
+              <div className="flex flex-wrap gap-1 mb-4">
+                {tool.tags?.slice(0, 3).map(tag => (
+                  <span key={tag} className="bg-gray-100 text-gray-500 text-xs px-2 py-1 rounded-full">{tag}</span>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <a href={tool.url} target="_blank" rel="noopener noreferrer"
+                className="block text-center bg-[#FF6B35] text-white py-2.5 rounded-xl font-semibold hover:bg-[#FF5722] transition-colors text-sm">
+                Visit Tool ↗
+              </a>
+            </div>
+          ))}
+        </div>
+
+        {filtered.length === 0 && (
           <div className="text-center py-16">
-            <div className="text-6xl mb-4">🔍</div>
-            <p className="text-xl text-gray-600 mb-6">
-              No tools found. Try a different search or category.
-            </p>
-            <Button
-              onClick={() => {
-                setSearchQuery("");
-                setSelectedCategory("All");
-              }}
-              className="bg-[#FF6B35] hover:bg-[#FF5722] text-white"
-            >
-              Reset Filters
-            </Button>
+            <p className="text-4xl mb-4">🔍</p>
+            <p className="text-gray-500 text-lg">No tools found for your filters.</p>
+            <button onClick={() => { setActiveCategory("All"); setActivePricing("All"); setSearch(""); }}
+              className="mt-4 text-[#FF6B35] hover:underline font-medium">
+              Clear all filters
+            </button>
           </div>
         )}
       </div>
