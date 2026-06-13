@@ -10,30 +10,28 @@ export function Navbar() {
   const pathname = location.pathname;
 
   const menuItems = [
-    { label: "Discover", href: "/home" },
-    { label: "Compare", href: "/compare" },
-    { label: "Blog", href: "/blog" },
-    { label: "Learn", href: "/learning" },
-    { label: "Chatbot", href: "/chatbot" },
-    { label: "Trivia", href: "/trivia" },
+    { label: "Tools", href: "/home" },
+    { label: "Workflows", href: "/workflows" },
+    { label: "AI Models", href: "/models" },
+    { label: "Stacks", href: "/stacks" },
+    { label: "Prompts", href: "/prompts" },
+    { label: "AI Guide", href: "/chatbot" },
   ];
 
   return (
     <nav className="sticky top-0 z-50 bg-white/40 backdrop-blur-md shadow-md">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
           <Link
             to="/"
             className="flex items-center gap-2 hover:opacity-80 transition-opacity"
           >
-            <span className="text-2xl">🤖</span>
+            <span className="text-2xl">🧠</span>
             <span className="text-2xl font-bold text-[#FF6B35]">
               AI Nexus Pro
             </span>
           </Link>
 
-          {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-6">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -67,7 +65,6 @@ export function Navbar() {
             </Button>
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             className="md:hidden text-2xl"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -76,7 +73,6 @@ export function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t">
             <div className="relative px-4 mb-3">
@@ -87,7 +83,6 @@ export function Navbar() {
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] transition-colors"
               />
             </div>
-
             {menuItems.map((item) => (
               <Link
                 key={item.href}

@@ -3,13 +3,13 @@ import { Navbar } from "./components/Navbar.jsx";
 import { Footer } from "./components/Footer.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import HomePage from "./pages/HomePage.jsx";
-import ComparePage from "./pages/ComparePage.jsx";
-import BlogPage from "./pages/BlogPage.jsx";
-import LearningPage from "./pages/LearningPage.jsx";
 import ChatBot from "./pages/ChatBot.jsx";
-import TriviaPage from "./pages/TriviaPage.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
 import SignInPage from "./pages/SignInPage.jsx";
+import WorkflowBuilder from "./pages/WorkflowBuilder.jsx";
+import ModelHub from "./pages/ModelHub.jsx";
+import StackExplorer from "./pages/StackExplorer.jsx";
+import PromptLibrary from "./pages/PromptLibrary.jsx";
 
 function App() {
   return (
@@ -19,13 +19,13 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/home" element={<HomePage />} />
-          <Route path="/compare" element={<ComparePage />} />
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/learning" element={<LearningPage />} />
           <Route path="/chatbot" element={<ChatBot />} />
-          <Route path="/trivia" element={<TriviaPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/signin" element={<SignInPage />} />
+          <Route path="/workflows" element={<WorkflowBuilder />} />
+          <Route path="/models" element={<ModelHub />} />
+          <Route path="/stacks" element={<StackExplorer />} />
+          <Route path="/prompts" element={<PromptLibrary />} />
         </Routes>
       </main>
       <Footer />
