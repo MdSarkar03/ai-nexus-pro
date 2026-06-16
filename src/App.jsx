@@ -21,7 +21,6 @@ function App() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/chatbot" element={<ChatBot />} />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/signin" element={<SignInPage />} />
           <Route path="/workflows" element={<WorkflowBuilder />} />
           <Route path="/models" element={<ModelHub />} />
           <Route path="/stacks" element={<StackExplorer />} />
