@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
 
 const categories = ["All", "Coding", "Writing", "Research", "Design", "Career", "Learning", "Audio", "Presentation"];
 const difficulties = ["All", "Beginner", "Intermediate", "Advanced"];
@@ -14,6 +15,12 @@ export default function PromptLibrary() {
   const [search, setSearch] = useState("");
   const [copied, setCopied] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // AI Prompt Generator states
+  const [goalInput, setGoalInput] = useState("");
+  const [generatedPrompt, setGeneratedPrompt] = useState(null);
+  const [genLoading, setGenLoading] = useState(false);
+  const [genError, setGenError] = useState("");
 
   useEffect(() => {
     axios.get(`${API}/api/prompts`)
@@ -39,6 +46,112 @@ export default function PromptLibrary() {
     setTimeout(() => setCopied(null), 2000);
   };
 
+  const generatePrompt = async () => {
+    if (!goalInput.trim()) {
+      setGenError("Please enter a goal or task");
+      return;
+    }
+    if (!GROQ_API_KEY) {
+      setGenError("GROQ_API_KEY is missing. Please add VITE_GROQ_API_KEY to your .env file");
+      return;
+    }
+
+    setGenLoading(true);
+    setGenError("");
+    setGeneratedPrompt(null);
+
+    const systemPrompt = `You are an expert prompt engineer. Generate a highly optimized prompt for the user's goal.
+
+User Goal: ${goalInput}
+
+Return the response in this exact format (do not add extra text):
+
+Optimized Prompt:
+[Clear, detailed, highly effective prompt]
+
+Explanation:
+[2-3 sentences why this prompt works well]
+
+Tips:
+- Tip 1
+- Tip 2
+- Tip 3
+
+Recommended Model:
+[Specific model suggestion, e.g., llama-3.3-70b-versatile, GPT-4o, Claude 3.5, etc.]`;
+
+    try {
+      const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${GROQ_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: "llama-3.3-70b-versatile",
+          messages: [
+            { role: "user", content: systemPrompt }
+          ],
+          temperature: 0.7,
+          max_tokens: 1500
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const content = data.choices?.[0]?.message?.content;
+
+      if (!content) {
+        throw new Error("Empty response from AI");
+      }
+
+      // Parse the structured response
+      const sections = {
+        optimized: "",
+        explanation: "",
+        tips: [],
+        model: ""
+      };
+
+      const lines = content.split('\n');
+      let currentSection = "";
+
+      lines.forEach(line => {
+        const trimmed = line.trim();
+        if (trimmed.startsWith("Optimized Prompt:")) {
+          currentSection = "optimized";
+          sections.optimized = trimmed.replace("Optimized Prompt:", "").trim();
+        } else if (trimmed.startsWith("Explanation:")) {
+          currentSection = "explanation";
+          sections.explanation = trimmed.replace("Explanation:", "").trim();
+        } else if (trimmed.startsWith("Tips:")) {
+          currentSection = "tips";
+        } else if (trimmed.startsWith("Recommended Model:")) {
+          currentSection = "model";
+          sections.model = trimmed.replace("Recommended Model:", "").trim();
+        } else if (currentSection === "tips" && trimmed.startsWith("-")) {
+          sections.tips.push(trimmed.replace(/^-+\s*/, "").trim());
+        } else if (currentSection === "optimized" && trimmed) {
+          sections.optimized += (sections.optimized ? "\n" : "") + trimmed;
+        } else if (currentSection === "explanation" && trimmed && !trimmed.startsWith("Tips:")) {
+          sections.explanation += (sections.explanation ? " " : "") + trimmed;
+        } else if (currentSection === "model" && trimmed) {
+          sections.model += (sections.model ? " " : "") + trimmed;
+        }
+      });
+
+      setGeneratedPrompt(sections);
+    } catch (error) {
+      console.error(error);
+      setGenError(error.message || "Failed to generate prompt. Please try again.");
+    } finally {
+      setGenLoading(false);
+    }
+  };
+
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-12 h-12 border-4 border-[#FF6B35] border-t-transparent rounded-full animate-spin mx-auto"></div>
@@ -58,6 +171,98 @@ export default function PromptLibrary() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* === NEW: AI Prompt Generator Section === */}
+        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 mb-10">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 bg-[#FF6B35] text-white rounded-2xl flex items-center justify-center text-2xl">✨</div>
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">AI Prompt Generator</h2>
+              <p className="text-gray-600">Describe your goal and get a perfectly optimized prompt instantly</p>
+            </div>
+          </div>
+
+          <div className="flex gap-4">
+            <input
+              type="text"
+              value={goalInput}
+              onChange={(e) => setGoalInput(e.target.value)}
+              placeholder="e.g. Write a blog post about AI trends, Generate startup ideas for SaaS, Prepare for a React interview..."
+              className="flex-1 px-5 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] text-gray-700 placeholder-gray-400"
+              onKeyDown={(e) => e.key === 'Enter' && generatePrompt()}
+            />
+            <button
+              onClick={generatePrompt}
+              disabled={genLoading || !goalInput.trim()}
+              className="px-8 py-4 bg-[#FF6B35] hover:bg-[#FF5722] disabled:bg-gray-300 text-white font-semibold rounded-2xl transition-all flex items-center gap-2 whitespace-nowrap"
+            >
+              {genLoading ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Generating...
+                </>
+              ) : "Generate Prompt"}
+            </button>
+          </div>
+
+          {genError && (
+            <div className="mt-4 p-4 bg-red-50 border border-red-200 text-red-600 rounded-2xl text-sm">
+              {genError}
+            </div>
+          )}
+
+          {generatedPrompt && (
+            <div className="mt-8 border border-gray-100 rounded-2xl p-6 bg-gray-50">
+              <div className="flex justify-between items-start mb-6">
+                <h3 className="text-xl font-semibold text-gray-900">Generated Prompt</h3>
+                <button
+                  onClick={() => {
+                    setGeneratedPrompt(null);
+                    setGoalInput("");
+                  }}
+                  className="text-gray-400 hover:text-gray-600 text-sm"
+                >
+                  Clear
+                </button>
+              </div>
+
+              {/* Optimized Prompt */}
+              <div className="mb-6">
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">OPTIMIZED PROMPT</p>
+                <div className="bg-white border border-gray-200 rounded-xl p-5 text-gray-700 leading-relaxed whitespace-pre-wrap">
+                  {generatedPrompt.optimized || "No prompt generated"}
+                </div>
+              </div>
+
+              {/* Explanation */}
+              <div className="mb-6">
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">EXPLANATION</p>
+                <p className="text-gray-600">{generatedPrompt.explanation}</p>
+              </div>
+
+              {/* Tips */}
+              {generatedPrompt.tips && generatedPrompt.tips.length > 0 && (
+                <div className="mb-6">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">TIPS FOR BETTER RESULTS</p>
+                  <ul className="list-disc pl-5 space-y-1 text-gray-600">
+                    {generatedPrompt.tips.map((tip, i) => (
+                      <li key={i}>{tip}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Recommended Model */}
+              {generatedPrompt.model && (
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">RECOMMENDED MODEL</p>
+                  <span className="inline-block bg-[#FF6B35]/10 text-[#FF6B35] px-4 py-1.5 rounded-full font-medium">
+                    {generatedPrompt.model}
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
 
         {/* Search */}
         <div className="relative mb-6">
@@ -94,11 +299,10 @@ export default function PromptLibrary() {
         {/* Results Count */}
         <p className="text-gray-500 text-sm mb-6">{filtered.length} prompts found</p>
 
-        {/* Prompts Grid */}
+        {/* Prompts Grid - UNCHANGED */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {filtered.map(prompt => (
             <div key={prompt._id} className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all border border-gray-100 p-6">
-
               {/* Top Row */}
               <div className="flex items-start justify-between mb-3">
                 <div>

@@ -46,35 +46,64 @@ export default function ChatBot() {
     const userMessage = text || input.trim();
     if (!userMessage) return;
 
+    const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
+    if (!GROQ_API_KEY) {
+      setMessages(prev => [...prev, {
+        role: "assistant",
+        content: "⚠️ Groq API key is missing. Please add VITE_GROQ_API_KEY to your .env file.",
+      }]);
+      return;
+    }
+
     setInput("");
     setMessages(prev => [...prev, { role: "user", content: userMessage }]);
     setLoading(true);
 
     try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
+      const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${GROQ_API_KEY}`,
+        },
         body: JSON.stringify({
-          model: "claude-sonnet-4-6",
-          max_tokens: 1000,
-          system: systemPrompt,
+          model: "llama-3.3-70b-versatile",
           messages: [
+            { role: "system", content: systemPrompt },
             ...messages.filter(m => m.role !== "system").map(m => ({
               role: m.role,
               content: m.content,
             })),
             { role: "user", content: userMessage },
           ],
+          temperature: 0.7,
         }),
       });
 
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error?.message || `API error: ${response.status}`);
+      }
+
       const data = await response.json();
-      const reply = data.content?.[0]?.text || "Sorry, I couldn't get a response. Please try again.";
+      const reply = data.choices?.[0]?.message?.content?.trim();
+
+      if (!reply) {
+        throw new Error("Empty response from AI");
+      }
+
       setMessages(prev => [...prev, { role: "assistant", content: reply }]);
-    } catch {
+    } catch (error) {
+      console.error("Chat error:", error);
+      const errorMsg = error.message.includes("API key") || error.message.includes("401")
+        ? "Invalid or missing Groq API key. Please check your VITE_GROQ_API_KEY."
+        : error.message.includes("Failed to fetch") || error.message.includes("network")
+        ? "Network error. Please check your internet connection and try again."
+        : "Sorry, something went wrong. Please try again.";
+
       setMessages(prev => [...prev, {
         role: "assistant",
-        content: "Sorry, something went wrong. Please check your connection and try again.",
+        content: errorMsg,
       }]);
     } finally {
       setLoading(false);

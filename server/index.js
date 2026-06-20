@@ -1,3 +1,4 @@
+// server/index.js
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -8,6 +9,9 @@ import workflowsRouter from "./routes/workflows.js";
 import modelsRouter from "./routes/models.js";
 import stacksRouter from "./routes/stacks.js";
 import promptsRouter from "./routes/prompts.js";
+
+// New engine route (CommonJS compatible require for consistency with potential mixed usage)
+import engineRoutes from "./routes/engine.js";
 
 dotenv.config({ path: '../.env' });
 
@@ -23,6 +27,9 @@ app.use("/api/workflows", workflowsRouter);
 app.use("/api/models", modelsRouter);
 app.use("/api/stacks", stacksRouter);
 app.use("/api/prompts", promptsRouter);
+
+// New Decision Intelligence Engine route
+app.use('/api/engine', engineRoutes);
 
 // Health check
 app.get("/", (req, res) => {
