@@ -3,8 +3,6 @@ import { Navbar } from "./components/Navbar.jsx";
 import { Footer } from "./components/Footer.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import HomePage from "./pages/HomePage.jsx";
-import ChatBot from "./pages/ChatBot.jsx";
-import SearchPage from "./pages/SearchPage.jsx";
 import SignInPage from "./pages/SignInPage.jsx";
 import WorkflowBuilder from "./pages/WorkflowBuilder.jsx";
 import ModelHub from "./pages/ModelHub.jsx";
