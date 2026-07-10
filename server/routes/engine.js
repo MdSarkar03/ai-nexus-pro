@@ -83,11 +83,11 @@ console.log("Prompts:", prompts.length);
     }));
 
     // 5. Pick best recommendations using pickTop
-    const topModel = pickTop(scoredModels);
-    const topTool = pickTop(scoredTools);
-    const topStack = pickTop(scoredStacks);
-    const topWorkflow = pickTop(scoredWorkflows);
-    const topPrompt = pickTop(scoredPrompts);
+   const topModel = pickTop(scoredModels)[0] || null;
+const topTool = pickTop(scoredTools)[0] || null;
+const topStack = pickTop(scoredStacks)[0] || null;
+const topWorkflow = pickTop(scoredWorkflows)[0] || null;
+const topPrompt = pickTop(scoredPrompts)[0] || null;
 
     // 6. Generate explanations
     const modelExplanation = explainModelWin(topModel, intent);
