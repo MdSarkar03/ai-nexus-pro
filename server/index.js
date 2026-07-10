@@ -12,6 +12,7 @@ import promptsRouter from "./routes/prompts.js";
 
 // New engine route (CommonJS compatible require for consistency with potential mixed usage)
 import engineRoutes from "./routes/engine.js";
+import architectRoutes from "./routes/architect.js";
 
 dotenv.config({ path: '../.env' });
 
@@ -30,6 +31,7 @@ app.use("/api/prompts", promptsRouter);
 
 // New Decision Intelligence Engine route
 app.use('/api/engine', engineRoutes);
+app.use('/api/architect', architectRoutes);
 
 // Health check
 app.get("/", (req, res) => {
