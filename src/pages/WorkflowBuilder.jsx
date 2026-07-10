@@ -1,6 +1,7 @@
 // 2. Complete src/pages/WorkflowBuilder.jsx
 import { useState, useEffect } from "react";
 import axios from "axios";
+import PagePurposeHeader from "../components/PagePurposeHeader";
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
@@ -198,6 +199,10 @@ Rules:
           </p>
         </div>
       </div>
+      <PagePurposeHeader
+  title="Great Results Come From Systems, Not Single Tools."
+  description="Build repeatable AI workflows that connect tools, models, and processes into practical execution."
+/>
 
       <div className="max-w-5xl mx-auto px-4 py-8">
         {/* Tabs */}

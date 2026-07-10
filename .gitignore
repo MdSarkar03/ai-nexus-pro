@@ -2,3 +2,7 @@ node_modules/
 .env
 dist
 build
+backend.zip 
+frontend.zip 
+backend/ 
+frontend/ 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import PagePurposeHeader from "../components/PagePurposeHeader";
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -39,6 +40,10 @@ export default function ModelHub() {
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">Compare top LLMs by benchmark scores, pricing, and use cases. Find the right model for your task.</p>
         </div>
       </div>
+      <PagePurposeHeader
+  title="Choosing The Wrong Model Costs More Than Choosing No Model At All."
+  description="Compare AI models based on real-world capabilities, strengths, limitations, and intended use cases."
+/>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
 

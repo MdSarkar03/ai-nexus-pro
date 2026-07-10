@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import PagePurposeHeader from "../components/PagePurposeHeader";
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
@@ -171,6 +172,10 @@ Focus on modern, production-ready, scalable choices. Use popular tools.`;
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">Discover curated AI tool combinations for your role. See exactly which tools work together and why.</p>
         </div>
       </div>
+      <PagePurposeHeader
+  title="Individual Tools Solve Tasks. AI Stacks Solve Businesses."
+  description="Explore complete AI technology stacks designed for specific business goals and operational outcomes."
+/>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* === AI RECOMMENDATION SECTION === */}

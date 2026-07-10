@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import PagePurposeHeader from "../components/PagePurposeHeader";
 
 const suggestions = [
   "What's the best AI for coding?",
@@ -126,6 +127,10 @@ export default function ChatBot() {
           <p className="text-gray-600">Ask me anything about AI tools, models, workflows, or prompts.</p>
         </div>
       </div>
+      <PagePurposeHeader
+  title="Conversations Become Valuable When They Lead To Better Decisions."
+  description="Interact with AI guidance designed to help you navigate the AI ecosystem intelligently."
+/>
 
       <div className="flex-1 max-w-4xl mx-auto w-full px-4 py-6 flex flex-col gap-4">
 

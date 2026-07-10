@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import PagePurposeHeader from "../components/PagePurposeHeader";
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -63,6 +64,10 @@ export default function HomePage() {
             <h1 className="text-4xl font-bold text-gray-900 mb-3">AI Nexus Pro</h1>
             <p className="text-gray-600 text-lg">Discover the best AI tools of 2026, organized by category.</p>
           </div>
+          <PagePurposeHeader
+  title="The Right Tool Is Not The Most Popular One — It's The One That Fits The Job."
+  description="Explore curated AI tools organized by capability, use case, and practical value instead of hype."
+/>
 
           {/* Search - Unchanged */}
           <div className="relative max-w-2xl mx-auto">

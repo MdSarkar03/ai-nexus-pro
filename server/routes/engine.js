@@ -39,6 +39,8 @@ router.post("/recommend", async (req, res) => {
 
     // 2. Extract intent
     const intent = await extractIntent(trimmedQuery);
+    console.log("Query:", trimmedQuery);
+console.log("Intent:", intent);
 
     // 3. Load all data from MongoDB
     const [models, tools, stacks, workflows, prompts] = await Promise.all([
@@ -48,6 +50,11 @@ router.post("/recommend", async (req, res) => {
       Workflow.find({}).lean(),
       Prompt.find({}).lean()
     ]);
+    console.log("Models:", models.length);
+console.log("Tools:", tools.length);
+console.log("Stacks:", stacks.length);
+console.log("Workflows:", workflows.length);
+console.log("Prompts:", prompts.length);
 
     // 4. Score every item
     const scoredModels = models.map(model => ({
