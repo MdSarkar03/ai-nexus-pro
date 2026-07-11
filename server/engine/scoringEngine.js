@@ -16,17 +16,49 @@ function normalizeWeights(weightSet) {
   }, {});
 }
 
+// New metadata-based intent matching (Stage 2)
+function computeIntentMatch(item, intent) {
+  if (!item || !item.metadata || !intent) return 0.5; // safe fallback if metadata missing
+
+  const fieldMap = [
+    { intentField: 'projectType', metaField: 'projectTypes' },
+    { intentField: 'domain', metaField: 'domains' },
+    { intentField: 'complexity', metaField: 'complexity' },
+    { intentField: 'budget', metaField: 'budget' },
+    { intentField: 'teamSize', metaField: 'teamSize' },
+    { intentField: 'deployment', metaField: 'deployment' },
+    { intentField: 'security', metaField: 'securityLevel' },
+  ];
+
+  let applicableCount = 0;
+  let matchCount = 0;
+
+  for (const { intentField, metaField } of fieldMap) {
+    const intentValue = intent[intentField];
+    // Skip dimensions where intent didn't specify a real value
+    if (!intentValue || intentValue === 'unspecified') continue;
+
+    applicableCount++;
+    const metaArray = Array.isArray(item.metadata[metaField]) ? item.metadata[metaField] : [];
+    if (metaArray.map(v => String(v).toLowerCase()).includes(String(intentValue).toLowerCase())) {
+      matchCount++;
+    }
+  }
+
+  // If intent had no usable fields at all, fall back to neutral score
+  if (applicableCount === 0) return 0.5;
+
+  return matchCount / applicableCount; // 0 to 1, proportion of matched dimensions
+}
+
 // Generic weighted scorer
 function weightedScore(item, intent, entityType) {
   if (!item) return 0;
   const w = normalizeWeights(weights[entityType] || {});
   let finalScore = 0;
 
-  // Intent-based matching (0-1) - fallback if no strong intent match
-  const intentMatch = intent && intent.intent && item.name && item.description
-    ? (item.name.toLowerCase().includes(intent.intent.toLowerCase()) || 
-       (item.description || '').toLowerCase().includes(intent.intent.toLowerCase()) ? 0.8 : 0.3)
-    : 0.5;
+  // Intent-based matching (0-1) - now uses real metadata fields
+  const intentMatch = computeIntentMatch(item, intent);
 
   switch (entityType) {
     case 'model':
