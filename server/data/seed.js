@@ -18,8 +18,8 @@ dotenv.config({
   path: path.join(__dirname, "../../.env"),
 });
 
-// Optional: remove after verifying it works
-console.log("MONGO_URI:", process.env.MONGO_URI);
+
+
 
 const tools = [
   // AI Chatbots & Assistants
@@ -338,6 +338,15 @@ const llmModels = [
     strengths: ["Versatile", "Strong ecosystem", "Tool calling"],
     weaknesses: ["Cost at scale"],
     free: false,
+    metadata: {
+      projectTypes: ["SaaS", "Chatbot", "API Service", "AI Product"],
+      domains: ["General", "Technology"],
+      complexity: ["Moderate", "Complex"],
+      budget: ["High"],
+      teamSize: ["Small", "Medium", "Large"],
+      deployment: ["Cloud"],
+      securityLevel: ["Standard"]
+    }
   },
   {
     name: "GPT-4 Turbo",
@@ -351,6 +360,15 @@ const llmModels = [
     strengths: ["Speed", "Reliability"],
     weaknesses: ["Slightly less capable than latest"],
     free: false,
+    metadata: {
+      projectTypes: ["SaaS", "Chatbot", "API Service"],
+      domains: ["General", "Technology"],
+      complexity: ["Moderate", "Complex"],
+      budget: ["High"],
+      teamSize: ["Small", "Medium", "Large"],
+      deployment: ["Cloud"],
+      securityLevel: ["Standard"]
+    }
   },
   {
     name: "Claude 3 Opus",
@@ -364,6 +382,15 @@ const llmModels = [
     strengths: ["Exceptional reasoning", "Long context"],
     weaknesses: ["Higher cost"],
     free: false,
+    metadata: {
+      projectTypes: ["SaaS", "Internal Tool", "AI Product"],
+      domains: ["Healthcare", "Finance", "Legal", "General"],
+      complexity: ["Complex"],
+      budget: ["High"],
+      teamSize: ["Medium", "Large"],
+      deployment: ["Cloud"],
+      securityLevel: ["Standard", "High"]
+    }
   },
   {
     name: "Claude 3.5 Sonnet",
@@ -377,6 +404,15 @@ const llmModels = [
     strengths: ["Best coding performance", "Safe outputs"],
     weaknesses: ["No native image gen"],
     free: false,
+    metadata: {
+      projectTypes: ["SaaS", "API Service", "Chatbot"],
+      domains: ["General", "Technology"],
+      complexity: ["Moderate", "Complex"],
+      budget: ["Medium"],
+      teamSize: ["Solo", "Small", "Medium"],
+      deployment: ["Cloud"],
+      securityLevel: ["Standard"]
+    }
   },
   {
     name: "Claude 3.7 Sonnet",
@@ -390,6 +426,15 @@ const llmModels = [
     strengths: ["Improved reasoning", "Tool integration"],
     weaknesses: ["Availability"],
     free: false,
+    metadata: {
+      projectTypes: ["SaaS", "API Service", "AI Product"],
+      domains: ["General", "Technology"],
+      complexity: ["Moderate", "Complex"],
+      budget: ["Medium"],
+      teamSize: ["Solo", "Small", "Medium"],
+      deployment: ["Cloud"],
+      securityLevel: ["Standard"]
+    }
   },
   {
     name: "Gemini 1.5 Pro",
@@ -403,6 +448,15 @@ const llmModels = [
     strengths: ["Massive context", "Multimodal native"],
     weaknesses: ["Variable consistency"],
     free: false,
+    metadata: {
+      projectTypes: ["SaaS", "AI Product", "Data Pipeline"],
+      domains: ["General", "Research"],
+      complexity: ["Moderate", "Complex"],
+      budget: ["Medium"],
+      teamSize: ["Small", "Medium"],
+      deployment: ["Cloud"],
+      securityLevel: ["Standard"]
+    }
   },
   {
     name: "Gemini 2.5 Pro",
@@ -416,6 +470,15 @@ const llmModels = [
     strengths: ["Best-in-class math", "Google ecosystem"],
     weaknesses: ["Creative tasks"],
     free: false,
+    metadata: {
+      projectTypes: ["SaaS", "AI Product", "Data Pipeline"],
+      domains: ["Research", "Technology", "General"],
+      complexity: ["Complex"],
+      budget: ["Medium"],
+      teamSize: ["Small", "Medium"],
+      deployment: ["Cloud"],
+      securityLevel: ["Standard"]
+    }
   },
   {
     name: "Llama 3.1 405B",
@@ -429,6 +492,15 @@ const llmModels = [
     strengths: ["Open weights", "High performance"],
     weaknesses: ["Requires infrastructure"],
     free: true,
+    metadata: {
+      projectTypes: ["Internal Tool", "AI Product", "SaaS"],
+      domains: ["General", "Technology"],
+      complexity: ["Complex"],
+      budget: ["Free"],
+      teamSize: ["Medium", "Large"],
+      deployment: ["On-Prem", "Cloud", "Hybrid"],
+      securityLevel: ["Standard", "High"]
+    }
   },
   {
     name: "Llama 3.3 70B",
@@ -442,6 +514,15 @@ const llmModels = [
     strengths: ["Free to run", "Open source"],
     weaknesses: ["Smaller than 405B"],
     free: true,
+    metadata: {
+      projectTypes: ["Internal Tool", "MVP"],
+      domains: ["General"],
+      complexity: ["Simple", "Moderate"],
+      budget: ["Free"],
+      teamSize: ["Solo", "Small", "Medium"],
+      deployment: ["On-Prem", "Cloud"],
+      securityLevel: ["Standard", "High"]
+    }
   },
   {
     name: "Mistral Large",
@@ -455,6 +536,15 @@ const llmModels = [
     strengths: ["Cost effective", "Privacy focused"],
     weaknesses: ["Ecosystem"],
     free: false,
+    metadata: {
+      projectTypes: ["SaaS", "API Service"],
+      domains: ["General"],
+      complexity: ["Moderate"],
+      budget: ["Low", "Medium"],
+      teamSize: ["Solo", "Small", "Medium"],
+      deployment: ["Cloud"],
+      securityLevel: ["Standard", "High"]
+    }
   },
   {
     name: "Mixtral 8x22B",
@@ -468,6 +558,15 @@ const llmModels = [
     strengths: ["MoE efficiency"],
     weaknesses: ["Context length"],
     free: false,
+    metadata: {
+      projectTypes: ["MVP", "Internal Tool", "API Service"],
+      domains: ["General"],
+      complexity: ["Simple", "Moderate"],
+      budget: ["Free", "Low"],
+      teamSize: ["Solo", "Small"],
+      deployment: ["Cloud", "On-Prem"],
+      securityLevel: ["Standard"]
+    }
   },
   {
     name: "Command R+",
@@ -481,6 +580,15 @@ const llmModels = [
     strengths: ["Tool use", "RAG optimized"],
     weaknesses: ["Less known"],
     free: false,
+    metadata: {
+      projectTypes: ["SaaS", "Internal Tool", "Enterprise Software"],
+      domains: ["Finance", "Enterprise", "General"],
+      complexity: ["Moderate", "Complex"],
+      budget: ["Medium"],
+      teamSize: ["Medium", "Large"],
+      deployment: ["Cloud"],
+      securityLevel: ["Standard", "High"]
+    }
   },
   {
     name: "DeepSeek R1",
@@ -494,6 +602,15 @@ const llmModels = [
     strengths: ["Exceptional reasoning", "Low cost"],
     weaknesses: ["Language bias"],
     free: true,
+    metadata: {
+      projectTypes: ["MVP", "AI Product", "API Service"],
+      domains: ["Research", "Technology", "General"],
+      complexity: ["Complex"],
+      budget: ["Free", "Low"],
+      teamSize: ["Solo", "Small", "Medium"],
+      deployment: ["Cloud", "On-Prem"],
+      securityLevel: ["Standard"]
+    }
   },
   {
     name: "Grok 3",
@@ -507,6 +624,15 @@ const llmModels = [
     strengths: ["Real-time X data", "Less censored"],
     weaknesses: ["Access via X"],
     free: false,
+    metadata: {
+      projectTypes: ["SaaS", "Chatbot"],
+      domains: ["General", "Media"],
+      complexity: ["Moderate", "Complex"],
+      budget: ["Medium"],
+      teamSize: ["Solo", "Small", "Medium"],
+      deployment: ["Cloud"],
+      securityLevel: ["Standard"]
+    }
   },
   {
     name: "Grok 4",
@@ -520,641 +646,318 @@ const llmModels = [
     strengths: ["Frontier performance"],
     weaknesses: ["Newer model"],
     free: false,
+    metadata: {
+      projectTypes: ["SaaS", "AI Product"],
+      domains: ["General", "Technology"],
+      complexity: ["Complex"],
+      budget: ["High"],
+      teamSize: ["Medium", "Large"],
+      deployment: ["Cloud"],
+      securityLevel: ["Standard"]
+    }
   }
 ];
 const stacks = [
   {
-  title: "Startup MVP Stack",
-  role: "Rapid full-stack SaaS development",
-  description: "Optimized for shipping MVPs quickly with minimal DevOps overhead.",
-  tools: [
-    {
-      toolName: "Next.js",
-      toolUrl: "https://nextjs.org",
-      purpose: "Frontend + SSR",
-      category: "Frontend"
-    },
-    {
-      toolName: "Node.js",
-      toolUrl: "https://nodejs.org",
-      purpose: "Backend runtime",
-      category: "Backend"
-    },
-    {
-      toolName: "Supabase",
-      toolUrl: "https://supabase.com",
-      purpose: "Database + Auth + Storage",
-      category: "Database"
-    },
-    {
-      toolName: "Clerk",
-      toolUrl: "https://clerk.com",
-      purpose: "Authentication",
-      category: "Authentication"
-    },
-    {
-      toolName: "Vercel",
-      toolUrl: "https://vercel.com",
-      purpose: "Deployment",
-      category: "Deployment"
-    },
-    {
-      toolName: "Sentry",
-      toolUrl: "https://sentry.io",
-      purpose: "Monitoring",
-      category: "Monitoring"
+    title: "Startup MVP Stack",
+    role: "Rapid full-stack SaaS development",
+    description: "Optimized for shipping MVPs quickly with minimal DevOps overhead.",
+    tools: [
+      { toolName: "Next.js", toolUrl: "https://nextjs.org", purpose: "Frontend + SSR", category: "Frontend" },
+      { toolName: "Node.js", toolUrl: "https://nodejs.org", purpose: "Backend runtime", category: "Backend" },
+      { toolName: "Supabase", toolUrl: "https://supabase.com", purpose: "Database + Auth + Storage", category: "Database" },
+      { toolName: "Clerk", toolUrl: "https://clerk.com", purpose: "Authentication", category: "Authentication" },
+      { toolName: "Vercel", toolUrl: "https://vercel.com", purpose: "Deployment", category: "Deployment" },
+      { toolName: "Sentry", toolUrl: "https://sentry.io", purpose: "Monitoring", category: "Monitoring" }
+    ],
+    tags: ["startup", "mvp", "fullstack"],
+    difficulty: "Intermediate",
+    reasoning: "Excellent balance between developer experience, deployment speed, and scalability for early-stage startups.",
+    alternatives: [
+      { category: "Frontend", toolName: "SvelteKit", reason: "Smaller bundle size." },
+      { category: "Database", toolName: "MongoDB", reason: "Flexible schema." },
+      { category: "Deployment", toolName: "Railway", reason: "Simple deployment workflow." }
+    ],
+    metadata: {
+      projectTypes: ["SaaS", "MVP", "Web App"],
+      domains: ["General", "E-commerce", "Productivity"],
+      complexity: ["Simple", "Moderate"],
+      budget: ["Free", "Low", "Medium"],
+      teamSize: ["Solo", "Small"],
+      deployment: ["Cloud", "Serverless"],
+      securityLevel: ["Standard"]
     }
-  ],
-  tags: ["startup","mvp","fullstack"],
-  difficulty: "Intermediate",
-  reasoning: "Excellent balance between developer experience, deployment speed, and scalability for early-stage startups.",
-  alternatives: [
-    {
-      category:"Frontend",
-      toolName:"SvelteKit",
-      reason:"Smaller bundle size."
-    },
-    {
-      category:"Database",
-      toolName:"MongoDB",
-      reason:"Flexible schema."
-    },
-    {
-      category:"Deployment",
-      toolName:"Railway",
-      reason:"Simple deployment workflow."
-    }
-  ]
-},
+  },
   {
-  title: "AI SaaS Platform",
-  role: "Building AI-powered SaaS applications",
-  description: "Production-ready stack for LLM applications.",
-  tools: [
-    {
-      toolName:"Next.js",
-      toolUrl:"https://nextjs.org",
-      purpose:"Frontend",
-      category:"Frontend"
-    },
-    {
-      toolName:"FastAPI",
-      toolUrl:"https://fastapi.tiangolo.com",
-      purpose:"AI Backend APIs",
-      category:"Backend"
-    },
-    {
-      toolName:"PostgreSQL",
-      toolUrl:"https://postgresql.org",
-      purpose:"Relational database",
-      category:"Database"
-    },
-    {
-      toolName:"Pinecone",
-      toolUrl:"https://pinecone.io",
-      purpose:"Vector Database",
-      category:"AI"
-    },
-    {
-      toolName:"OpenAI",
-      toolUrl:"https://openai.com",
-      purpose:"LLM Provider",
-      category:"AI"
-    },
-    {
-      toolName:"Docker",
-      toolUrl:"https://docker.com",
-      purpose:"Containerization",
-      category:"Deployment"
+    title: "AI SaaS Platform",
+    role: "Building AI-powered SaaS applications",
+    description: "Production-ready stack for LLM applications.",
+    tools: [
+      { toolName: "Next.js", toolUrl: "https://nextjs.org", purpose: "Frontend", category: "Frontend" },
+      { toolName: "FastAPI", toolUrl: "https://fastapi.tiangolo.com", purpose: "AI Backend APIs", category: "Backend" },
+      { toolName: "PostgreSQL", toolUrl: "https://postgresql.org", purpose: "Relational database", category: "Database" },
+      { toolName: "Pinecone", toolUrl: "https://pinecone.io", purpose: "Vector Database", category: "AI" },
+      { toolName: "OpenAI", toolUrl: "https://openai.com", purpose: "LLM Provider", category: "AI" },
+      { toolName: "Docker", toolUrl: "https://docker.com", purpose: "Containerization", category: "Deployment" }
+    ],
+    tags: ["ai", "llm", "rag"],
+    difficulty: "Advanced",
+    reasoning: "Designed for scalable AI applications using retrieval augmentation, vector search, and production APIs.",
+    alternatives: [
+      { category: "AI", toolName: "Anthropic Claude", reason: "Better long-context reasoning." },
+      { category: "Vector DB", toolName: "Weaviate", reason: "Open-source alternative." },
+      { category: "Backend", toolName: "NestJS", reason: "Enterprise TypeScript architecture." }
+    ],
+    metadata: {
+      projectTypes: ["SaaS", "AI Product", "Chatbot", "API Service"],
+      domains: ["General", "Technology", "Productivity"],
+      complexity: ["Complex"],
+      budget: ["Medium", "High"],
+      teamSize: ["Small", "Medium"],
+      deployment: ["Cloud"],
+      securityLevel: ["Standard", "High"]
     }
-  ],
-  tags:["ai","llm","rag"],
-  difficulty:"Advanced",
-  reasoning:"Designed for scalable AI applications using retrieval augmentation, vector search, and production APIs.",
-  alternatives:[
-    {
-      category:"AI",
-      toolName:"Anthropic Claude",
-      reason:"Better long-context reasoning."
-    },
-    {
-      category:"Vector DB",
-      toolName:"Weaviate",
-      reason:"Open-source alternative."
-    },
-    {
-      category:"Backend",
-      toolName:"NestJS",
-      reason:"Enterprise TypeScript architecture."
+  },
+  {
+    title: "Enterprise SaaS Stack",
+    role: "Large-scale enterprise software",
+    description: "Security-first architecture for enterprise applications.",
+    tools: [
+      { toolName: "React", toolUrl: "https://react.dev", purpose: "Frontend", category: "Frontend" },
+      { toolName: "NestJS", toolUrl: "https://nestjs.com", purpose: "Backend", category: "Backend" },
+      { toolName: "PostgreSQL", toolUrl: "https://postgresql.org", purpose: "Database", category: "Database" },
+      { toolName: "Auth0", toolUrl: "https://auth0.com", purpose: "Identity Management", category: "Authentication" },
+      { toolName: "AWS", toolUrl: "https://aws.amazon.com", purpose: "Infrastructure", category: "Deployment" },
+      { toolName: "Datadog", toolUrl: "https://datadoghq.com", purpose: "Observability", category: "Monitoring" }
+    ],
+    tags: ["enterprise", "security", "scalable"],
+    difficulty: "Advanced",
+    reasoning: "Enterprise-grade architecture emphasizing security, compliance, scalability, and observability.",
+    alternatives: [
+      { category: "Backend", toolName: "Spring Boot", reason: "Ideal for Java enterprise ecosystems." },
+      { category: "Cloud", toolName: "Azure", reason: "Better Microsoft ecosystem integration." },
+      { category: "Monitoring", toolName: "Grafana", reason: "Open-source observability." }
+    ],
+    metadata: {
+      projectTypes: ["SaaS", "Enterprise Software", "Internal Tool"],
+      domains: ["Finance", "Enterprise", "General"],
+      complexity: ["Complex"],
+      budget: ["High"],
+      teamSize: ["Medium", "Large"],
+      deployment: ["Cloud"],
+      securityLevel: ["High"]
     }
-  ]
-},
-    {
-  title:"Enterprise SaaS Stack",
-  role:"Large-scale enterprise software",
-  description:"Security-first architecture for enterprise applications.",
-  tools:[
-    {
-      toolName:"React",
-      toolUrl:"https://react.dev",
-      purpose:"Frontend",
-      category:"Frontend"
-    },
-    {
-      toolName:"NestJS",
-      toolUrl:"https://nestjs.com",
-      purpose:"Backend",
-      category:"Backend"
-    },
-    {
-      toolName:"PostgreSQL",
-      toolUrl:"https://postgresql.org",
-      purpose:"Database",
-      category:"Database"
-    },
-    {
-      toolName:"Auth0",
-      toolUrl:"https://auth0.com",
-      purpose:"Identity Management",
-      category:"Authentication"
-    },
-    {
-      toolName:"AWS",
-      toolUrl:"https://aws.amazon.com",
-      purpose:"Infrastructure",
-      category:"Deployment"
-    },
-    {
-      toolName:"Datadog",
-      toolUrl:"https://datadoghq.com",
-      purpose:"Observability",
-      category:"Monitoring"
+  },
+  {
+    title: "E-commerce Platform Stack",
+    role: "Scalable online store and marketplace",
+    description: "Production-ready stack for modern e-commerce applications with secure payments, inventory management, and SEO.",
+    tools: [
+      { toolName: "Next.js", toolUrl: "https://nextjs.org", purpose: "SEO-friendly storefront", category: "Frontend" },
+      { toolName: "NestJS", toolUrl: "https://nestjs.com", purpose: "REST APIs and business logic", category: "Backend" },
+      { toolName: "PostgreSQL", toolUrl: "https://postgresql.org", purpose: "Products, orders and customer data", category: "Database" },
+      { toolName: "Redis", toolUrl: "https://redis.io", purpose: "Caching and session management", category: "Cache" },
+      { toolName: "Stripe", toolUrl: "https://stripe.com", purpose: "Online payments", category: "Payments" },
+      { toolName: "Vercel", toolUrl: "https://vercel.com", purpose: "Deployment", category: "Deployment" }
+    ],
+    tags: ["ecommerce", "retail", "payments"],
+    difficulty: "Intermediate",
+    reasoning: "Provides excellent SEO, reliable payment processing, fast page loads, and a scalable backend suitable for growing online businesses.",
+    alternatives: [
+      { category: "Payments", toolName: "Razorpay", reason: "Better choice for Indian payment processing." },
+      { category: "Deployment", toolName: "AWS", reason: "Greater infrastructure flexibility." },
+      { category: "Frontend", toolName: "Remix", reason: "Excellent server-side rendering performance." }
+    ],
+    metadata: {
+      projectTypes: ["E-commerce", "Marketplace", "Web App"],
+      domains: ["E-commerce", "Retail"],
+      complexity: ["Moderate", "Complex"],
+      budget: ["Medium", "High"],
+      teamSize: ["Small", "Medium"],
+      deployment: ["Cloud"],
+      securityLevel: ["Standard", "High"]
     }
-  ],
-  tags:["enterprise","security","scalable"],
-  difficulty:"Advanced",
-  reasoning:"Enterprise-grade architecture emphasizing security, compliance, scalability, and observability.",
-  alternatives:[
-    {
-      category:"Backend",
-      toolName:"Spring Boot",
-      reason:"Ideal for Java enterprise ecosystems."
-    },
-    {
-      category:"Cloud",
-      toolName:"Azure",
-      reason:"Better Microsoft ecosystem integration."
-    },
-    {
-      category:"Monitoring",
-      toolName:"Grafana",
-      reason:"Open-source observability."
+  },
+  {
+    title: "Mobile App Backend Stack",
+    role: "Backend architecture for Android and iOS applications",
+    description: "Complete backend stack supporting authentication, notifications, cloud storage, and realtime data.",
+    tools: [
+      { toolName: "Flutter", toolUrl: "https://flutter.dev", purpose: "Cross-platform mobile development", category: "Frontend" },
+      { toolName: "Firebase", toolUrl: "https://firebase.google.com", purpose: "Authentication and cloud platform", category: "Backend" },
+      { toolName: "Cloud Firestore", toolUrl: "https://firebase.google.com/products/firestore", purpose: "Realtime NoSQL database", category: "Database" },
+      { toolName: "Firebase Cloud Messaging", toolUrl: "https://firebase.google.com/docs/cloud-messaging", purpose: "Push notifications", category: "Notifications" },
+      { toolName: "Cloud Functions", toolUrl: "https://firebase.google.com/products/functions", purpose: "Serverless APIs", category: "Backend" },
+      { toolName: "Crashlytics", toolUrl: "https://firebase.google.com/products/crashlytics", purpose: "Crash reporting", category: "Monitoring" }
+    ],
+    tags: ["mobile", "flutter", "firebase"],
+    difficulty: "Intermediate",
+    reasoning: "Ideal for startups needing fast mobile development with managed backend services and minimal operational overhead.",
+    alternatives: [
+      { category: "Frontend", toolName: "React Native", reason: "JavaScript ecosystem compatibility." },
+      { category: "Backend", toolName: "Supabase", reason: "Open-source Firebase alternative." },
+      { category: "Monitoring", toolName: "Sentry", reason: "Advanced error tracking." }
+    ],
+    metadata: {
+      projectTypes: ["Mobile App"],
+      domains: ["General", "Social", "Productivity"],
+      complexity: ["Moderate"],
+      budget: ["Free", "Low", "Medium"],
+      teamSize: ["Solo", "Small"],
+      deployment: ["Cloud", "Serverless"],
+      securityLevel: ["Standard"]
     }
-  ]
-},
-    {
-  title: "E-commerce Platform Stack",
-  role: "Scalable online store and marketplace",
-  description: "Production-ready stack for modern e-commerce applications with secure payments, inventory management, and SEO.",
-  tools: [
-    {
-      toolName: "Next.js",
-      toolUrl: "https://nextjs.org",
-      purpose: "SEO-friendly storefront",
-      category: "Frontend"
-    },
-    {
-      toolName: "NestJS",
-      toolUrl: "https://nestjs.com",
-      purpose: "REST APIs and business logic",
-      category: "Backend"
-    },
-    {
-      toolName: "PostgreSQL",
-      toolUrl: "https://postgresql.org",
-      purpose: "Products, orders and customer data",
-      category: "Database"
-    },
-    {
-      toolName: "Redis",
-      toolUrl: "https://redis.io",
-      purpose: "Caching and session management",
-      category: "Cache"
-    },
-    {
-      toolName: "Stripe",
-      toolUrl: "https://stripe.com",
-      purpose: "Online payments",
-      category: "Payments"
-    },
-    {
-      toolName: "Vercel",
-      toolUrl: "https://vercel.com",
-      purpose: "Deployment",
-      category: "Deployment"
+  },
+  {
+    title: "Data Engineering Pipeline",
+    role: "Enterprise ETL and analytics platform",
+    description: "Modern architecture for collecting, processing, transforming, and visualizing large-scale business data.",
+    tools: [
+      { toolName: "Apache Airflow", toolUrl: "https://airflow.apache.org", purpose: "Workflow orchestration", category: "Pipeline" },
+      { toolName: "Apache Spark", toolUrl: "https://spark.apache.org", purpose: "Distributed data processing", category: "Processing" },
+      { toolName: "dbt", toolUrl: "https://www.getdbt.com", purpose: "Data transformation", category: "Transformation" },
+      { toolName: "Snowflake", toolUrl: "https://www.snowflake.com", purpose: "Cloud data warehouse", category: "Warehouse" },
+      { toolName: "Power BI", toolUrl: "https://powerbi.microsoft.com", purpose: "Business intelligence dashboards", category: "Analytics" },
+      { toolName: "PostgreSQL", toolUrl: "https://postgresql.org", purpose: "Operational database", category: "Database" }
+    ],
+    tags: ["etl", "analytics", "big-data"],
+    difficulty: "Advanced",
+    reasoning: "Supports reliable ETL pipelines, scalable analytics, cloud warehousing, and business intelligence for enterprise data workloads.",
+    alternatives: [
+      { category: "Warehouse", toolName: "Google BigQuery", reason: "Fully managed analytics platform." },
+      { category: "Pipeline", toolName: "Prefect", reason: "Simpler orchestration for Python teams." },
+      { category: "Analytics", toolName: "Tableau", reason: "Advanced visualization and reporting." }
+    ],
+    metadata: {
+      projectTypes: ["Data Pipeline", "Analytics Platform", "Internal Tool"],
+      domains: ["Finance", "Enterprise", "General", "Retail"],
+      complexity: ["Complex"],
+      budget: ["High"],
+      teamSize: ["Medium", "Large"],
+      deployment: ["Cloud", "On-Prem", "Hybrid"],
+      securityLevel: ["Standard", "High"]
     }
-  ],
-  tags: ["ecommerce", "retail", "payments"],
-  difficulty: "Intermediate",
-  reasoning: "Provides excellent SEO, reliable payment processing, fast page loads, and a scalable backend suitable for growing online businesses.",
-  alternatives: [
-    {
-      category: "Payments",
-      toolName: "Razorpay",
-      reason: "Better choice for Indian payment processing."
-    },
-    {
-      category: "Deployment",
-      toolName: "AWS",
-      reason: "Greater infrastructure flexibility."
-    },
-    {
-      category: "Frontend",
-      toolName: "Remix",
-      reason: "Excellent server-side rendering performance."
+  },
+  {
+    title: "Healthcare AI Platform",
+    role: "HIPAA-ready AI healthcare platform",
+    description: "Secure architecture for clinical decision support, patient management, and AI-assisted healthcare workflows.",
+    tools: [
+      { toolName: "Next.js", toolUrl: "https://nextjs.org", purpose: "Healthcare portal", category: "Frontend" },
+      { toolName: "FastAPI", toolUrl: "https://fastapi.tiangolo.com", purpose: "Medical APIs", category: "Backend" },
+      { toolName: "PostgreSQL", toolUrl: "https://postgresql.org", purpose: "Patient records", category: "Database" },
+      { toolName: "OpenAI", toolUrl: "https://openai.com", purpose: "Clinical AI assistance", category: "AI" },
+      { toolName: "Docker", toolUrl: "https://docker.com", purpose: "Container deployment", category: "Deployment" },
+      { toolName: "AWS", toolUrl: "https://aws.amazon.com", purpose: "HIPAA-capable cloud infrastructure", category: "Cloud" }
+    ],
+    tags: ["healthcare", "medical", "ai"],
+    difficulty: "Advanced",
+    reasoning: "Prioritizes security, compliance, reliability, and AI integration suitable for healthcare applications handling sensitive patient information.",
+    alternatives: [
+      { category: "Cloud", toolName: "Azure", reason: "Strong healthcare compliance offerings." },
+      { category: "AI", toolName: "Claude", reason: "Excellent long-document analysis." },
+      { category: "Database", toolName: "MongoDB", reason: "Flexible medical document storage." }
+    ],
+    metadata: {
+      projectTypes: ["SaaS", "AI Product", "Internal Tool"],
+      domains: ["Healthcare"],
+      complexity: ["Complex"],
+      budget: ["Medium", "High"],
+      teamSize: ["Small", "Medium", "Large"],
+      deployment: ["Cloud", "Hybrid"],
+      securityLevel: ["High"]
     }
-  ]
-},
-     {
-  title: "Mobile App Backend Stack",
-  role: "Backend architecture for Android and iOS applications",
-  description: "Complete backend stack supporting authentication, notifications, cloud storage, and realtime data.",
-  tools: [
-    {
-      toolName: "Flutter",
-      toolUrl: "https://flutter.dev",
-      purpose: "Cross-platform mobile development",
-      category: "Frontend"
-    },
-    {
-      toolName: "Firebase",
-      toolUrl: "https://firebase.google.com",
-      purpose: "Authentication and cloud platform",
-      category: "Backend"
-    },
-    {
-      toolName: "Cloud Firestore",
-      toolUrl: "https://firebase.google.com/products/firestore",
-      purpose: "Realtime NoSQL database",
-      category: "Database"
-    },
-    {
-      toolName: "Firebase Cloud Messaging",
-      toolUrl: "https://firebase.google.com/docs/cloud-messaging",
-      purpose: "Push notifications",
-      category: "Notifications"
-    },
-    {
-      toolName: "Cloud Functions",
-      toolUrl: "https://firebase.google.com/products/functions",
-      purpose: "Serverless APIs",
-      category: "Backend"
-    },
-    {
-      toolName: "Crashlytics",
-      toolUrl: "https://firebase.google.com/products/crashlytics",
-      purpose: "Crash reporting",
-      category: "Monitoring"
+  },
+  {
+    title: "Cybersecurity Platform",
+    role: "Threat detection and security monitoring",
+    description: "Enterprise security stack for SIEM, monitoring, alerting, and automated incident response.",
+    tools: [
+      { toolName: "React", toolUrl: "https://react.dev", purpose: "Security dashboard", category: "Frontend" },
+      { toolName: "Go", toolUrl: "https://go.dev", purpose: "High-performance backend", category: "Backend" },
+      { toolName: "Elasticsearch", toolUrl: "https://www.elastic.co", purpose: "Security log indexing", category: "Database" },
+      { toolName: "Kibana", toolUrl: "https://www.elastic.co/kibana", purpose: "Security visualization", category: "Analytics" },
+      { toolName: "Docker", toolUrl: "https://docker.com", purpose: "Containerization", category: "Deployment" },
+      { toolName: "Grafana", toolUrl: "https://grafana.com", purpose: "Infrastructure monitoring", category: "Monitoring" }
+    ],
+    tags: ["security", "cybersecurity", "siem"],
+    difficulty: "Advanced",
+    reasoning: "Optimized for real-time monitoring, log aggregation, visualization, and incident response at enterprise scale.",
+    alternatives: [
+      { category: "Analytics", toolName: "Splunk", reason: "Enterprise SIEM solution." },
+      { category: "Backend", toolName: "Rust", reason: "Memory-safe systems programming." },
+      { category: "Monitoring", toolName: "Datadog", reason: "Managed observability platform." }
+    ],
+    metadata: {
+      projectTypes: ["Internal Tool", "SaaS", "Enterprise Software"],
+      domains: ["Cybersecurity", "Enterprise", "Government", "Finance"],
+      complexity: ["Complex"],
+      budget: ["High"],
+      teamSize: ["Medium", "Large"],
+      deployment: ["Cloud", "On-Prem", "Hybrid"],
+      securityLevel: ["High"]
     }
-  ],
-  tags: ["mobile", "flutter", "firebase"],
-  difficulty: "Intermediate",
-  reasoning: "Ideal for startups needing fast mobile development with managed backend services and minimal operational overhead.",
-  alternatives: [
-    {
-      category: "Frontend",
-      toolName: "React Native",
-      reason: "JavaScript ecosystem compatibility."
-    },
-    {
-      category: "Backend",
-      toolName: "Supabase",
-      reason: "Open-source Firebase alternative."
-    },
-    {
-      category: "Monitoring",
-      toolName: "Sentry",
-      reason: "Advanced error tracking."
+  },
+  {
+    title: "DevOps & Cloud Platform",
+    role: "Cloud-native DevOps infrastructure",
+    description: "Scalable CI/CD and Kubernetes platform for modern software delivery.",
+    tools: [
+      { toolName: "Docker", toolUrl: "https://docker.com", purpose: "Containerization", category: "Containers" },
+      { toolName: "Kubernetes", toolUrl: "https://kubernetes.io", purpose: "Container orchestration", category: "Infrastructure" },
+      { toolName: "GitHub Actions", toolUrl: "https://github.com/features/actions", purpose: "CI/CD", category: "Automation" },
+      { toolName: "Terraform", toolUrl: "https://terraform.io", purpose: "Infrastructure as Code", category: "Infrastructure" },
+      { toolName: "Prometheus", toolUrl: "https://prometheus.io", purpose: "Metrics collection", category: "Monitoring" },
+      { toolName: "Grafana", toolUrl: "https://grafana.com", purpose: "Dashboards", category: "Monitoring" }
+    ],
+    tags: ["devops", "cloud", "kubernetes"],
+    difficulty: "Advanced",
+    reasoning: "Provides reproducible infrastructure, automated deployments, observability, and cloud-native scalability.",
+    alternatives: [
+      { category: "CI/CD", toolName: "GitLab CI", reason: "Integrated DevOps workflow." },
+      { category: "Infrastructure", toolName: "Pulumi", reason: "Infrastructure using programming languages." },
+      { category: "Containers", toolName: "Podman", reason: "Daemonless container engine." }
+    ],
+    metadata: {
+      projectTypes: ["Internal Tool", "Infrastructure Platform"],
+      domains: ["General", "Enterprise", "Technology"],
+      complexity: ["Complex"],
+      budget: ["Medium", "High"],
+      teamSize: ["Medium", "Large"],
+      deployment: ["Cloud", "Hybrid"],
+      securityLevel: ["Standard", "High"]
     }
-  ]
-},
-    {
-  title: "Data Engineering Pipeline",
-  role: "Enterprise ETL and analytics platform",
-  description: "Modern architecture for collecting, processing, transforming, and visualizing large-scale business data.",
-  tools: [
-    {
-      toolName: "Apache Airflow",
-      toolUrl: "https://airflow.apache.org",
-      purpose: "Workflow orchestration",
-      category: "Pipeline"
-    },
-    {
-      toolName: "Apache Spark",
-      toolUrl: "https://spark.apache.org",
-      purpose: "Distributed data processing",
-      category: "Processing"
-    },
-    {
-      toolName: "dbt",
-      toolUrl: "https://www.getdbt.com",
-      purpose: "Data transformation",
-      category: "Transformation"
-    },
-    {
-      toolName: "Snowflake",
-      toolUrl: "https://www.snowflake.com",
-      purpose: "Cloud data warehouse",
-      category: "Warehouse"
-    },
-    {
-      toolName: "Power BI",
-      toolUrl: "https://powerbi.microsoft.com",
-      purpose: "Business intelligence dashboards",
-      category: "Analytics"
-    },
-    {
-      toolName: "PostgreSQL",
-      toolUrl: "https://postgresql.org",
-      purpose: "Operational database",
-      category: "Database"
+  },
+  {
+    title: "Machine Learning Engineering Stack",
+    role: "End-to-end ML model development and deployment",
+    description: "Production ML platform covering experimentation, model training, deployment, monitoring, and serving.",
+    tools: [
+      { toolName: "Python", toolUrl: "https://python.org", purpose: "ML development", category: "Programming" },
+      { toolName: "PyTorch", toolUrl: "https://pytorch.org", purpose: "Deep learning framework", category: "ML" },
+      { toolName: "MLflow", toolUrl: "https://mlflow.org", purpose: "Experiment tracking", category: "MLOps" },
+      { toolName: "FastAPI", toolUrl: "https://fastapi.tiangolo.com", purpose: "Model serving APIs", category: "Backend" },
+      { toolName: "Docker", toolUrl: "https://docker.com", purpose: "Container deployment", category: "Deployment" },
+      { toolName: "Weights & Biases", toolUrl: "https://wandb.ai", purpose: "Model monitoring", category: "MLOps" }
+    ],
+    tags: ["machine-learning", "mlops", "ai"],
+    difficulty: "Advanced",
+    reasoning: "Covers the complete ML lifecycle from experimentation through deployment and production monitoring using industry-standard MLOps tooling.",
+    alternatives: [
+      { category: "ML", toolName: "TensorFlow", reason: "Excellent production deployment ecosystem." },
+      { category: "Experiment Tracking", toolName: "Neptune.ai", reason: "Comprehensive experiment management." },
+      { category: "Deployment", toolName: "KServe", reason: "Kubernetes-native model serving." }
+    ],
+    metadata: {
+      projectTypes: ["AI Product", "Data Pipeline", "Internal Tool"],
+      domains: ["General", "Technology", "Research"],
+      complexity: ["Complex"],
+      budget: ["Medium", "High"],
+      teamSize: ["Small", "Medium"],
+      deployment: ["Cloud"],
+      securityLevel: ["Standard"]
     }
-  ],
-  tags: ["etl", "analytics", "big-data"],
-  difficulty: "Advanced",
-  reasoning: "Supports reliable ETL pipelines, scalable analytics, cloud warehousing, and business intelligence for enterprise data workloads.",
-  alternatives: [
-    {
-      category: "Warehouse",
-      toolName: "Google BigQuery",
-      reason: "Fully managed analytics platform."
-    },
-    {
-      category: "Pipeline",
-      toolName: "Prefect",
-      reason: "Simpler orchestration for Python teams."
-    },
-    {
-      category: "Analytics",
-      toolName: "Tableau",
-      reason: "Advanced visualization and reporting."
-    }
-  ]
-},
-    {
-  title: "Healthcare AI Platform",
-  role: "HIPAA-ready AI healthcare platform",
-  description: "Secure architecture for clinical decision support, patient management, and AI-assisted healthcare workflows.",
-  tools: [
-    {
-      toolName: "Next.js",
-      toolUrl: "https://nextjs.org",
-      purpose: "Healthcare portal",
-      category: "Frontend"
-    },
-    {
-      toolName: "FastAPI",
-      toolUrl: "https://fastapi.tiangolo.com",
-      purpose: "Medical APIs",
-      category: "Backend"
-    },
-    {
-      toolName: "PostgreSQL",
-      toolUrl: "https://postgresql.org",
-      purpose: "Patient records",
-      category: "Database"
-    },
-    {
-      toolName: "OpenAI",
-      toolUrl: "https://openai.com",
-      purpose: "Clinical AI assistance",
-      category: "AI"
-    },
-    {
-      toolName: "Docker",
-      toolUrl: "https://docker.com",
-      purpose: "Container deployment",
-      category: "Deployment"
-    },
-    {
-      toolName: "AWS",
-      toolUrl: "https://aws.amazon.com",
-      purpose: "HIPAA-capable cloud infrastructure",
-      category: "Cloud"
-    }
-  ],
-  tags: ["healthcare", "medical", "ai"],
-  difficulty: "Advanced",
-  reasoning: "Prioritizes security, compliance, reliability, and AI integration suitable for healthcare applications handling sensitive patient information.",
-  alternatives: [
-    {
-      category: "Cloud",
-      toolName: "Azure",
-      reason: "Strong healthcare compliance offerings."
-    },
-    {
-      category: "AI",
-      toolName: "Claude",
-      reason: "Excellent long-document analysis."
-    },
-    {
-      category: "Database",
-      toolName: "MongoDB",
-      reason: "Flexible medical document storage."
-    }
-  ]
-},
-    {
-  title: "Cybersecurity Platform",
-  role: "Threat detection and security monitoring",
-  description: "Enterprise security stack for SIEM, monitoring, alerting, and automated incident response.",
-  tools: [
-    {
-      toolName: "React",
-      toolUrl: "https://react.dev",
-      purpose: "Security dashboard",
-      category: "Frontend"
-    },
-    {
-      toolName: "Go",
-      toolUrl: "https://go.dev",
-      purpose: "High-performance backend",
-      category: "Backend"
-    },
-    {
-      toolName: "Elasticsearch",
-      toolUrl: "https://www.elastic.co",
-      purpose: "Security log indexing",
-      category: "Database"
-    },
-    {
-      toolName: "Kibana",
-      toolUrl: "https://www.elastic.co/kibana",
-      purpose: "Security visualization",
-      category: "Analytics"
-    },
-    {
-      toolName: "Docker",
-      toolUrl: "https://docker.com",
-      purpose: "Containerization",
-      category: "Deployment"
-    },
-    {
-      toolName: "Grafana",
-      toolUrl: "https://grafana.com",
-      purpose: "Infrastructure monitoring",
-      category: "Monitoring"
-    }
-  ],
-  tags: ["security", "cybersecurity", "siem"],
-  difficulty: "Advanced",
-  reasoning: "Optimized for real-time monitoring, log aggregation, visualization, and incident response at enterprise scale.",
-  alternatives: [
-    {
-      category: "Analytics",
-      toolName: "Splunk",
-      reason: "Enterprise SIEM solution."
-    },
-    {
-      category: "Backend",
-      toolName: "Rust",
-      reason: "Memory-safe systems programming."
-    },
-    {
-      category: "Monitoring",
-      toolName: "Datadog",
-      reason: "Managed observability platform."
-    }
-  ]
-},
-     {
-  title: "DevOps & Cloud Platform",
-  role: "Cloud-native DevOps infrastructure",
-  description: "Scalable CI/CD and Kubernetes platform for modern software delivery.",
-  tools: [
-    {
-      toolName: "Docker",
-      toolUrl: "https://docker.com",
-      purpose: "Containerization",
-      category: "Containers"
-    },
-    {
-      toolName: "Kubernetes",
-      toolUrl: "https://kubernetes.io",
-      purpose: "Container orchestration",
-      category: "Infrastructure"
-    },
-    {
-      toolName: "GitHub Actions",
-      toolUrl: "https://github.com/features/actions",
-      purpose: "CI/CD",
-      category: "Automation"
-    },
-    {
-      toolName: "Terraform",
-      toolUrl: "https://terraform.io",
-      purpose: "Infrastructure as Code",
-      category: "Infrastructure"
-    },
-    {
-      toolName: "Prometheus",
-      toolUrl: "https://prometheus.io",
-      purpose: "Metrics collection",
-      category: "Monitoring"
-    },
-    {
-      toolName: "Grafana",
-      toolUrl: "https://grafana.com",
-      purpose: "Dashboards",
-      category: "Monitoring"
-    }
-  ],
-  tags: ["devops", "cloud", "kubernetes"],
-  difficulty: "Advanced",
-  reasoning: "Provides reproducible infrastructure, automated deployments, observability, and cloud-native scalability.",
-  alternatives: [
-    {
-      category: "CI/CD",
-      toolName: "GitLab CI",
-      reason: "Integrated DevOps workflow."
-    },
-    {
-      category: "Infrastructure",
-      toolName: "Pulumi",
-      reason: "Infrastructure using programming languages."
-    },
-    {
-      category: "Containers",
-      toolName: "Podman",
-      reason: "Daemonless container engine."
-    }
-  ]
-},
-     {
-  title: "Machine Learning Engineering Stack",
-  role: "End-to-end ML model development and deployment",
-  description: "Production ML platform covering experimentation, model training, deployment, monitoring, and serving.",
-  tools: [
-    {
-      toolName: "Python",
-      toolUrl: "https://python.org",
-      purpose: "ML development",
-      category: "Programming"
-    },
-    {
-      toolName: "PyTorch",
-      toolUrl: "https://pytorch.org",
-      purpose: "Deep learning framework",
-      category: "ML"
-    },
-    {
-      toolName: "MLflow",
-      toolUrl: "https://mlflow.org",
-      purpose: "Experiment tracking",
-      category: "MLOps"
-    },
-    {
-      toolName: "FastAPI",
-      toolUrl: "https://fastapi.tiangolo.com",
-      purpose: "Model serving APIs",
-      category: "Backend"
-    },
-    {
-      toolName: "Docker",
-      toolUrl: "https://docker.com",
-      purpose: "Container deployment",
-      category: "Deployment"
-    },
-    {
-      toolName: "Weights & Biases",
-      toolUrl: "https://wandb.ai",
-      purpose: "Model monitoring",
-      category: "MLOps"
-    }
-  ],
-  tags: ["machine-learning", "mlops", "ai"],
-  difficulty: "Advanced",
-  reasoning: "Covers the complete ML lifecycle from experimentation through deployment and production monitoring using industry-standard MLOps tooling.",
-  alternatives: [
-    {
-      category: "ML",
-      toolName: "TensorFlow",
-      reason: "Excellent production deployment ecosystem."
-    },
-    {
-      category: "Experiment Tracking",
-      toolName: "Neptune.ai",
-      reason: "Comprehensive experiment management."
-    },
-    {
-      category: "Deployment",
-      toolName: "KServe",
-      reason: "Kubernetes-native model serving."
-    }
-  ]
-}
-  // 8 more realistic stacks following the same high-quality pattern (AI/ML Product Stack, E-commerce, Content Automation, Mobile, Data Pipeline, Healthcare, etc.) — abbreviated here for response length but fully implemented with 5-7 tools, rich reasoning, and 3-5 alternatives each in the actual file.
-  // (Full detailed 10 stacks generated with variety, real URLs, and schema compliance)
+  }
 ];
 
 const workflows = [
