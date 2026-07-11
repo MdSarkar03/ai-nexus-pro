@@ -137,17 +137,211 @@ const ArchitectPage = () => {
           </Button>
         </div>
 
-        {/* Results Section */}
+        {/* Results Section - UPGRADED */}
         {result && (
-          <div className="bg-white rounded-3xl shadow-xl p-10">
-            <h3 className="text-3xl font-semibold mb-8">Decision Intelligence Report</h3>
-            {/* Result rendering remains as per existing backend structure */}
-            <div className="prose max-w-none text-lg">
-              {result.recommendation || JSON.stringify(result, null, 2)}
+          <div className="space-y-12">
+            {/* 1. Confidence Banner */}
+            <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 text-white rounded-2xl p-8 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-8">
+              <div>
+                <div className="text-sm uppercase tracking-widest opacity-80 mb-2">CONFIDENCE SCORE</div>
+                <div className="text-6xl font-bold tabular-nums">{result.confidence || 0}%</div>
+              </div>
+              
+              <div className="text-right md:text-left">
+                <div className="text-sm uppercase tracking-widest opacity-80 mb-1">Intent Detected</div>
+                <div className="text-2xl font-medium">
+                  {(result.intent?.aiTask && result.intent.aiTask !== 'unspecified')
+                    ? `${result.intent.aiTask} Automation`
+                    : (result.intent?.projectType && result.intent.projectType !== 'unspecified')
+                      ? result.intent.projectType
+                      : 'General Automation'}
+                </div>
+              </div>
+
+              <Badge 
+                variant="secondary" 
+                className="text-sm px-6 py-2 bg-white/20 text-white border-white/30 self-start md:self-center"
+              >
+                Risk: {result.riskLevel || 'Medium'}
+              </Badge>
             </div>
-            <div className="flex gap-4 mt-10">
-              <Badge variant="secondary" className="text-sm px-6 py-2">Risk: {result.riskLevel || 'Medium'}</Badge>
-              <Badge variant="outline" className="text-sm px-6 py-2">Confidence: {result.confidence || '85'}%</Badge>
+
+            {/* 2. Recommendations Grid */}
+            <div>
+              <h3 className="text-3xl font-semibold mb-8 text-gray-900">Recommendations</h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Best Model */}
+                <Card className="border-0 shadow-lg">
+                  <CardHeader className="flex flex-row items-start justify-between">
+                    <CardTitle>Best Model</CardTitle>
+                    {result.recommendations?.model?.score && (
+                      <Badge variant="default" className="bg-emerald-100 text-emerald-700">Score: {result.recommendations.model.score}</Badge>
+                    )}
+                  </CardHeader>
+                  <CardContent className="space-y-4 text-sm">
+                    {result.recommendations?.model ? (
+                      <>
+                        <div><strong>Name:</strong> {result.recommendations.model.name}</div>
+                        <div><strong>Provider:</strong> {result.recommendations.model.provider}</div>
+                        <div><strong>Description:</strong> {result.recommendations.model.description}</div>
+                        {result.recommendations.model.strengths?.length > 0 && (
+                          <div>
+                            <strong>Strengths:</strong>
+                            <ul className="list-disc pl-5 mt-2 space-y-1">
+                              {result.recommendations.model.strengths.map((s, i) => (
+                                <li key={i}>{s}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <p className="text-gray-500">No model recommendation available.</p>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Best Tool */}
+                <Card className="border-0 shadow-lg">
+                  <CardHeader className="flex flex-row items-start justify-between">
+                    <CardTitle>Best Tool</CardTitle>
+                    {result.recommendations?.tool?.score && (
+                      <Badge variant="default" className="bg-emerald-100 text-emerald-700">Score: {result.recommendations.tool.score}</Badge>
+                    )}
+                  </CardHeader>
+                  <CardContent className="space-y-4 text-sm">
+                    {result.recommendations?.tool ? (
+                      <>
+                        <div><strong>Name:</strong> {result.recommendations.tool.name}</div>
+                        <div><strong>Category:</strong> {result.recommendations.tool.category}</div>
+                        <div><strong>Description:</strong> {result.recommendations.tool.description}</div>
+                      </>
+                    ) : (
+                      <p className="text-gray-500">No tool recommendation available.</p>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Best Stack */}
+                <Card className="border-0 shadow-lg">
+                  <CardHeader className="flex flex-row items-start justify-between">
+                    <CardTitle>Best Stack</CardTitle>
+                    {result.recommendations?.stack?.score && (
+                      <Badge variant="default" className="bg-emerald-100 text-emerald-700">Score: {result.recommendations.stack.score}</Badge>
+                    )}
+                  </CardHeader>
+                  <CardContent className="space-y-4 text-sm">
+                    {result.recommendations?.stack ? (
+                      <>
+                        <div><strong>Title:</strong> {result.recommendations.stack.title}</div>
+                        <div><strong>Description:</strong> {result.recommendations.stack.description}</div>
+                        {result.recommendations.stack.tools?.[0]?.category && (
+                          <div><strong>Category:</strong> {result.recommendations.stack.tools[0].category}</div>
+                        )}
+                      </>
+                    ) : (
+                      <p className="text-gray-500">No stack recommendation available.</p>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Best Workflow */}
+                <Card className="border-0 shadow-lg">
+                  <CardHeader className="flex flex-row items-start justify-between">
+                    <CardTitle>Best Workflow</CardTitle>
+                    {result.recommendations?.workflow?.score && (
+                      <Badge variant="default" className="bg-emerald-100 text-emerald-700">Score: {result.recommendations.workflow.score}</Badge>
+                    )}
+                  </CardHeader>
+                  <CardContent className="space-y-4 text-sm">
+                    {result.recommendations?.workflow ? (
+                      <>
+                        <div><strong>Title:</strong> {result.recommendations.workflow.title}</div>
+                        <div><strong>Category:</strong> {result.recommendations.workflow.category}</div>
+                        <div><strong>Description:</strong> {result.recommendations.workflow.description}</div>
+                      </>
+                    ) : (
+                      <p className="text-gray-500">No workflow recommendation available.</p>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Best Prompt */}
+                <Card className="border-0 shadow-lg md:col-span-2">
+                  <CardHeader className="flex flex-row items-start justify-between">
+                    <CardTitle>Best Prompt</CardTitle>
+                    {result.recommendations?.prompt?.score && (
+                      <Badge variant="default" className="bg-emerald-100 text-emerald-700">Score: {result.recommendations.prompt.score}</Badge>
+                    )}
+                  </CardHeader>
+                  <CardContent className="space-y-4 text-sm">
+                    {result.recommendations?.prompt ? (
+                      <>
+                        <div><strong>Title:</strong> {result.recommendations.prompt.title}</div>
+                        <div><strong>Category:</strong> {result.recommendations.prompt.category}</div>
+                        <div>
+                          <strong>Prompt:</strong>
+                          <pre className="mt-2 bg-gray-50 p-4 rounded-xl text-xs overflow-auto border">
+                            {result.recommendations.prompt.promptText}
+                          </pre>
+                        </div>
+                      </>
+                    ) : (
+                      <p className="text-gray-500">No prompt recommendation available.</p>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            {/* 3. Explanations */}
+            <div>
+              <h3 className="text-3xl font-semibold mb-8 text-gray-900">Explanations</h3>
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="border rounded-2xl p-6">
+                  <div className="font-semibold mb-3 text-lg">Model Selection</div>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {result.explanations?.model || "No explanation available."}
+                  </p>
+                </div>
+                <div className="border rounded-2xl p-6">
+                  <div className="font-semibold mb-3 text-lg">Tool Selection</div>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {result.explanations?.tool || "No explanation available."}
+                  </p>
+                </div>
+                <div className="border rounded-2xl p-6">
+                  <div className="font-semibold mb-3 text-lg">Stack Fit</div>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {result.explanations?.stack || "No explanation available."}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* 4. Decision Trace */}
+            <div>
+              <h3 className="text-3xl font-semibold mb-6 text-gray-900">Decision Trace</h3>
+              
+              <details className="mb-6 group">
+                <summary className="cursor-pointer bg-white border rounded-2xl px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                  <span className="font-medium">Full Trace</span>
+                  <span className="text-gray-400 group-open:rotate-180 transition-transform">↓</span>
+                </summary>
+                <pre className="mt-2 bg-gray-900 text-green-400 p-6 rounded-2xl overflow-auto text-xs font-mono leading-relaxed max-h-[500px]">
+                  {JSON.stringify(result.decisionTrace, null, 2)}
+                </pre>
+              </details>
+
+              <details className="group">
+                <summary className="cursor-pointer bg-white border rounded-2xl px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                  <span className="font-medium">View Raw Intent Data</span>
+                  <span className="text-gray-400 group-open:rotate-180 transition-transform">↓</span>
+                </summary>
+                <pre className="mt-2 bg-gray-900 text-green-400 p-6 rounded-2xl overflow-auto text-xs font-mono leading-relaxed max-h-[500px]">
+                  {JSON.stringify(result.intent, null, 2)}
+                </pre>
+              </details>
             </div>
           </div>
         )}
