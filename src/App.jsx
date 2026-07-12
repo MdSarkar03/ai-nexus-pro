@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import {
   Routes,
   Route,
+  Navigate,
   useLocation,
   useNavigate,
 } from "react-router-dom";
@@ -21,13 +22,17 @@ import PromptLibrary from "./pages/PromptLibrary.jsx";
 import PremiumPage from "./pages/PremiumPage.jsx";
 import ArchitectPage from "./pages/ArchitectPage.jsx";
 import WhyAINexusPro from "./pages/WhyAINexusPro.jsx";
+import SignInPage from "./pages/SignInPage.jsx";
 
 function AppContent() {
   const location = useLocation();
 
+  // These pages render their own full-page nav/footer, so hide the app shell's Navbar/Footer
   const hideLayout =
     location.pathname === "/" ||
-    location.pathname === "/why-ai-nexus-pro";
+    location.pathname === "/why-ai-nexus-pro" ||
+    location.pathname === "/landing" ||
+    location.pathname === "/signin";
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -35,12 +40,11 @@ function AppContent() {
 
       <main className={`flex-1 ${hideLayout ? "" : "pt-16"}`}>
         <Routes>
-          {/* Onboarding */}
-          <Route path="/" element={<LandingPage />} />
-          <Route
-            path="/why-ai-nexus-pro"
-            element={<WhyAINexusPro />}
-          />
+          {/* Onboarding flow: splash -> why -> landing -> signin -> home */}
+          <Route path="/" element={<Navigate to="/why-ai-nexus-pro" replace />} />
+          <Route path="/why-ai-nexus-pro" element={<WhyAINexusPro />} />
+          <Route path="/landing" element={<LandingPage />} />
+          <Route path="/signin" element={<SignInPage />} />
 
           {/* Main Platform */}
           <Route path="/home" element={<HomePage />} />

@@ -36,13 +36,53 @@ export function explainModelWin(model, context = {}) {
  */
 export function buildDecisionTrace(decision) {
   if (!decision) {
-    return { steps: [], summary: 'No decision provided' };
+    return { steps: [], summary: 'No decision provided', finalScore: 0 };
   }
-  
-  const steps = Array.isArray(decision.steps) ? decision.steps : [];
-  const summary = decision.summary ?? 
-                  (steps.length ? `Decision with ${steps.length} steps` : 'Empty trace');
-  
+
+  // Backward-compatible: if a caller already built an explicit steps[] array, use it as-is.
+  let steps = Array.isArray(decision.steps) ? decision.steps : null;
+
+  if (!steps) {
+    // Synthesize steps from the real shape passed by routes/architect.js:
+    // { query, intent, topModel, topTool, topStack, topWorkflow, topPrompt }
+    steps = [];
+
+    if (decision.intent) {
+      const i = decision.intent;
+      steps.push({
+        stage: 'Intent Extraction',
+        detail: `Parsed query into structured intent: projectType=${i.projectType ?? 'unspecified'}, domain=${i.domain ?? 'unspecified'}, budget=${i.budget ?? 'unspecified'}, complexity=${i.complexity ?? 'unspecified'}, teamSize=${i.teamSize ?? 'unspecified'}, security=${i.security ?? 'unspecified'}.`,
+        score: null
+      });
+    }
+
+    const pushSelection = (stage, item, nameKey = 'name') => {
+      if (!item) return;
+      const label = item[nameKey] ?? item.title ?? 'Unknown';
+      steps.push({
+        stage,
+        detail: `Selected "${label}" with score ${item.score ?? 0}.`,
+        score: typeof item.score === 'number' ? item.score : 0
+      });
+    };
+
+    pushSelection('Model Selection', decision.topModel);
+    pushSelection('Tool Selection', decision.topTool);
+    pushSelection('Stack Selection', decision.topStack, 'title');
+    pushSelection('Workflow Selection', decision.topWorkflow, 'title');
+    pushSelection('Prompt Selection', decision.topPrompt, 'title');
+  }
+
+  const summary = decision.summary ??
+                  (steps.length ? `Decision trace with ${steps.length} steps` : 'Empty trace');
+
+  // finalScore: prefer an explicit decision.score/confidence (old contract via calculateScore),
+  // otherwise average whatever numeric per-step scores we synthesized above.
+  const stepScores = steps.map(s => s.score).filter(s => typeof s === 'number' && !isNaN(s));
+  const finalScore = (typeof decision.score === 'number' || typeof decision.confidence === 'number')
+    ? calculateScore(decision)
+    : (stepScores.length ? Math.round(stepScores.reduce((a, b) => a + b, 0) / stepScores.length) : 0);
+
   return {
     steps: steps.map((step, index) => ({
       index,
@@ -50,7 +90,7 @@ export function buildDecisionTrace(decision) {
       timestamp: step.timestamp ?? new Date().toISOString()
     })),
     summary,
-    finalScore: calculateScore(decision)
+    finalScore
   };
 }
 

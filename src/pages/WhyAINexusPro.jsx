@@ -1,135 +1,170 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const sentences = [
-  "Finding AI tools is easy.",
-  "Trusting them is hard.",
-  "Thousands of tools claim to be the best.",
-  "Thousands of recommendations are based on trends instead of logic.",
-  "AI Nexus Pro was built to replace guesswork with decision intelligence.",
-  "Every recommendation is scored.",
-  "Every choice is explained.",
-  "Every decision leaves a trace."
+  "Choosing the wrong AI stack costs real money.",
+  "It costs months of rework.",
+  "Most developers pick tools by hype, not fit.",
+  "AI Nexus Pro fixes this.",
+  "It reads your project's real requirements — domain, budget, security, scale.",
+  "It scores every model, tool, and stack against them.",
+  "Then it delivers one recommendation.",
+  "The one that's actually right for you."
 ];
 
 const WhyAINexusPro = () => {
-  const [displayedLines, setDisplayedLines] = useState([]);
-  const [currentLine, setCurrentLine] = useState("");
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isTyping, setIsTyping] = useState(true);
+  const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
+  const [displayedWords, setDisplayedWords] = useState([]);
   const [showButton, setShowButton] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (currentIndex >= sentences.length) {
+    if (currentSentenceIndex >= sentences.length) {
       setShowButton(true);
       return;
     }
 
-    const sentence = sentences[currentIndex];
-    let charIndex = 0;
+    const sentence = sentences[currentSentenceIndex];
+    const words = sentence.split(' ');
+    let wordIndex = 0;
+
     const typingInterval = setInterval(() => {
-      if (charIndex < sentence.length) {
-        setCurrentLine(sentence.substring(0, charIndex + 1));
-        charIndex++;
+      if (wordIndex < words.length) {
+        setDisplayedWords(words.slice(0, wordIndex + 1));
+        wordIndex++;
       } else {
         clearInterval(typingInterval);
-        setDisplayedLines(prev => [...prev, sentence]);
-        setCurrentLine("");
-        setCurrentIndex(prev => prev + 1);
+        setTimeout(() => {
+          setDisplayedWords([]);
+          setCurrentSentenceIndex((prev) => prev + 1);
+        }, 900);
       }
-    }, 30); // Typing speed
+    }, 180);
 
     return () => clearInterval(typingInterval);
-  }, [currentIndex]);
+  }, [currentSentenceIndex]);
+
+  const currentText = displayedWords.join(' ');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 flex items-center justify-center p-6 overflow-hidden relative">
-      {/* Background effects */}
-      <div className="absolute inset-0 bg-[radial-gradient(at_50%_30%,rgba(168,85,247,0.15),transparent)]" />
-      
-      <div className="max-w-4xl w-full">
-        {/* Terminal Container */}
+    <div className="min-h-screen w-full bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 flex items-center justify-center overflow-hidden relative">
+      {/* Animated Ambient Background Orbs - Premium slow drift */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-slate-950/80 backdrop-blur-xl border border-purple-500/30 rounded-3xl p-8 shadow-2xl shadow-purple-500/10 overflow-hidden"
-        >
-          {/* Terminal Header */}
-          <div className="flex items-center gap-3 mb-8 border-b border-white/10 pb-6">
-            <div className="flex gap-2">
-              <div className="w-3 h-3 rounded-full bg-red-500" />
-              <div className="w-3 h-3 rounded-full bg-yellow-500" />
-              <div className="w-3 h-3 rounded-full bg-green-500" />
-            </div>
-            <div className="text-white/70 text-sm font-mono tracking-widest">AI NEXUS PRO • DECISION INTELLIGENCE v1.0</div>
-          </div>
+          className="absolute top-1/4 -left-40 w-[720px] h-[720px] bg-purple-600/10 rounded-full blur-[140px]"
+          animate={{
+            x: [0, 120, 0],
+            y: [0, -80, 0],
+            scale: [0.95, 1.08, 0.95],
+          }}
+          transition={{ duration: 19, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute bottom-1/3 right-1/4 w-[620px] h-[620px] bg-violet-600/10 rounded-full blur-[130px]"
+          animate={{
+            x: [0, -110, 0],
+            y: [0, 70, 0],
+            scale: [0.98, 1.12, 0.98],
+          }}
+          transition={{ duration: 23, repeat: Infinity, ease: "easeInOut", delay: 5 }}
+        />
+        <motion.div
+          className="absolute top-1/2 left-1/3 w-[680px] h-[680px] bg-indigo-500/8 rounded-full blur-[150px]"
+          animate={{
+            x: [0, 90, 0],
+            y: [0, -55, 0],
+            scale: [1, 1.06, 1],
+          }}
+          transition={{ duration: 17, repeat: Infinity, ease: "easeInOut", delay: 9 }}
+        />
+      </motion.div>
 
-          {/* Terminal Content */}
-          <div className="font-mono text-lg leading-relaxed text-emerald-400 min-h-[420px] space-y-4">
-            {/* Previously completed lines */}
-            {displayedLines.map((line, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3 }}
-                className="pl-6 relative"
-              >
-                <span className="absolute -left-1 text-purple-400 select-none">$</span>
-                {line}
-              </motion.div>
-            ))}
-
-            {/* Currently typing line */}
-            <AnimatePresence>
-              {currentLine && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="pl-6 relative flex items-center"
-                >
-                  <span className="absolute -left-1 text-purple-400 select-none">$</span>
-                  {currentLine}
-                  <motion.span
-                    animate={{ opacity: [0, 1, 0] }}
-                    transition={{ duration: 0.8, repeat: Infinity }}
-                    className="inline-block w-2.5 h-6 bg-emerald-400 ml-1 align-middle"
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Continue Button */}
-          <AnimatePresence>
-            {showButton && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="mt-12 flex justify-center"
-              >
-                <motion.button
-                  whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(168, 85, 247, 0.5)" }}
-                  whileTap={{ scale: 0.98 }}
-                  className="group relative px-12 py-6 bg-gradient-to-r from-purple-600 to-violet-600 text-white font-semibold text-xl rounded-2xl overflow-hidden border border-white/20 shadow-xl shadow-purple-500/30 transition-all"
-                  onClick={() => window.location.href = '/platform'} // Adjust route as needed
-                >
-                  <span className="relative z-10 flex items-center gap-3">
-                    CONTINUE TO PLATFORM
-                    <span className="group-hover:rotate-45 transition-transform">→</span>
-                  </span>
-                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </motion.button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
-
-        {/* Subtle luxury accents */}
-        <div className="text-center mt-8 text-white/40 text-xs tracking-[3px] font-mono">
-          POWERED BY DECISION INTELLIGENCE • EST. 2026
+      <div className="w-full max-w-5xl px-6 text-center relative z-10">
+        {/* Elegant Progress Indicator */}
+        <div className="flex justify-center gap-2.5 mb-16">
+          {sentences.map((_, idx) => (
+            <motion.div
+              key={idx}
+              className={`w-2.5 h-2.5 rounded-full transition-all duration-500 ${
+                idx === currentSentenceIndex 
+                  ? 'bg-gradient-to-r from-purple-400 to-violet-400 shadow-[0_0_12px_rgb(168,85,247)] scale-125' 
+                  : 'bg-white/20'
+              }`}
+              initial={{ opacity: 0.4 }}
+              animate={{ 
+                opacity: idx <= currentSentenceIndex ? 0.85 : 0.25,
+                scale: idx === currentSentenceIndex ? 1.25 : 1 
+              }}
+            />
+          ))}
         </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentSentenceIndex}
+            initial={{ opacity: 0, scale: 0.96, filter: 'blur(6px)' }}
+            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, scale: 1.04, filter: 'blur(4px)' }}
+            transition={{ duration: 0.75, ease: [0.215, 0.61, 0.355, 1] }}
+            className="min-h-[460px] flex items-center justify-center"
+          >
+            <div 
+              className="font-light tracking-[-0.025em] text-4xl md:text-6xl lg:text-[70px] leading-[1.05] text-white"
+              style={{
+                background: (currentSentenceIndex === 3 || currentSentenceIndex === 6) 
+                  ? 'linear-gradient(90deg, #c084fc, #a5b4fc, #c4d0ff)' 
+                  : 'none',
+                WebkitBackgroundClip: (currentSentenceIndex === 3 || currentSentenceIndex === 6) ? 'text' : 'unset',
+                WebkitTextFillColor: (currentSentenceIndex === 3 || currentSentenceIndex === 6) ? 'transparent' : 'inherit'
+              }}
+            >
+              {currentText}
+              <motion.span
+                animate={{ opacity: [0, 1, 0] }}
+                transition={{ duration: 0.65, repeat: Infinity }}
+                className="inline-block w-[3px] h-14 md:h-[78px] bg-gradient-to-b from-purple-400 via-violet-400 to-fuchsia-400 ml-2 align-middle shadow-[0_0_18px_rgb(168,85,247,0.9)]"
+              />
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Continue Button - Refined with pulse entrance */}
+        <AnimatePresence>
+          {showButton && (
+            <motion.div
+              initial={{ opacity: 0, y: 60 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.9, ease: "easeOut" }}
+              className="mt-20"
+            >
+              <motion.button
+                whileHover={{ 
+                  scale: 1.05, 
+                  boxShadow: "0 0 60px rgba(168, 85, 247, 0.75)" 
+                }}
+                whileTap={{ scale: 0.96 }}
+                onClick={() => navigate('/landing')}
+                className="group relative px-20 py-8 bg-gradient-to-r from-purple-600 via-violet-600 to-purple-600 text-white font-semibold text-2xl rounded-3xl overflow-hidden border border-white/30 shadow-2xl shadow-purple-500/50 transition-all"
+              >
+                <span className="relative z-10 flex items-center gap-4">
+                  CONTINUE TO PLATFORM
+                  <span className="group-hover:rotate-45 transition-transform text-3xl">→</span>
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/25 to-white/0 opacity-0 group-hover:opacity-100 transition-all duration-500" />
+              </motion.button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Subtle footer accent */}
+      <div className="absolute bottom-8 text-center w-full text-white/30 text-xs tracking-[4px] font-mono select-none">
+        POWERED BY DECISION INTELLIGENCE • EST. 2026
       </div>
     </div>
   );

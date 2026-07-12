@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils.js";
-import { Button } from "@/components/ui/Button.jsx";
-import { Search, Crown } from "lucide-react";
+import { Crown, Search } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function Navbar() {
@@ -34,15 +33,6 @@ export function Navbar() {
           </Link>
 
           <div className="hidden md:flex items-center gap-6">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search AI tools..."
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] transition-colors w-64"
-              />
-            </div>
-
             {menuItems.map((item) => (
               <Link
                 key={item.href}
@@ -58,6 +48,18 @@ export function Navbar() {
                 )}
               </Link>
             ))}
+
+            {/* Search icon link */}
+            <Link
+              to="/search"
+              className={cn(
+                "text-gray-600 hover:text-[#FF6B35] transition-colors p-2 rounded-full hover:bg-orange-50",
+                pathname === "/search" && "text-[#FF6B35] bg-orange-50"
+              )}
+              aria-label="Search"
+            >
+              <Search className="w-5 h-5" />
+            </Link>
 
             {/* Premium Menu Item with Animated Badge */}
             <Link
@@ -85,7 +87,7 @@ export function Navbar() {
                     backgroundSize: "200% 200%",
                   }}
                 />
-                
+
                 {/* Shine Effect */}
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
@@ -96,20 +98,13 @@ export function Navbar() {
                     repeatDelay: 2,
                   }}
                 />
-                
+
                 <span className="relative z-10 text-amber-950 flex items-center gap-1">
                   <Crown className="w-3 h-3" />
                   PRO
                 </span>
               </motion.div>
             </Link>
-
-            <Button
-              asChild
-              className="bg-[#FF6B35] hover:bg-[#FF5722] text-white"
-            >
-              <Link to="/signin">Sign In</Link>
-            </Button>
           </div>
 
           <button
@@ -123,15 +118,6 @@ export function Navbar() {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t bg-white/95">
-            <div className="relative px-4 mb-3">
-              <Search className="absolute left-7 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search AI tools..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] transition-colors"
-              />
-            </div>
-            
             {menuItems.map((item) => (
               <Link
                 key={item.href}
@@ -146,6 +132,19 @@ export function Navbar() {
               </Link>
             ))}
 
+            {/* Search link in mobile */}
+            <Link
+              to="/search"
+              className={cn(
+                "flex items-center gap-2 py-3 text-gray-600 hover:text-[#FF6B35] hover:bg-gray-50 px-4 rounded transition-colors",
+                pathname === "/search" && "text-[#FF6B35] bg-gray-50"
+              )}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Search className="w-4 h-4" />
+              Search
+            </Link>
+
             {/* Premium in Mobile */}
             <Link
               to="/premium"
@@ -157,14 +156,6 @@ export function Navbar() {
                 <Crown className="w-3 h-3" />
                 PRO
               </div>
-            </Link>
-
-            <Link
-              to="/signin"
-              className="block py-3 text-gray-600 hover:text-[#FF6B35] hover:bg-gray-50 px-4 rounded transition-colors"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Sign In
             </Link>
           </div>
         )}

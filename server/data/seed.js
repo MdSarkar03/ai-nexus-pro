@@ -25,7 +25,7 @@ const tools = [
   // AI Chatbots & Assistants
   {
     name: "ChatGPT",
-    logo: "https://logo.clearbit.com/openai.com",
+    logo: "https://www.google.com/s2/favicons?domain=openai.com&sz=128",
     category: "AI Chatbots & Assistants",
     description: "OpenAI's flagship conversational AI. Versatile for writing, coding, reasoning, and creative tasks.",
     pricing: "Freemium",
@@ -45,7 +45,7 @@ const tools = [
   },
   {
     name: "Claude",
-    logo: "https://logo.clearbit.com/claude.ai",
+    logo: "https://www.google.com/s2/favicons?domain=claude.ai&sz=128",
     category: "AI Chatbots & Assistants",
     description: "Anthropic's helpful and harmless AI assistant, excels at long-context analysis and careful reasoning.",
     pricing: "Freemium",
@@ -65,7 +65,7 @@ const tools = [
   },
   {
     name: "Google Gemini",
-    logo: "https://logo.clearbit.com/gemini.google.com",
+    logo: "https://www.google.com/s2/favicons?domain=gemini.google.com&sz=128",
     category: "AI Chatbots & Assistants",
     description: "Google's multimodal AI integrated with search, YouTube, and Google services.",
     pricing: "Freemium",
@@ -85,7 +85,7 @@ const tools = [
   },
   {
     name: "Grok",
-    logo: "https://logo.clearbit.com/x.ai",
+    logo: "https://www.google.com/s2/favicons?domain=x.ai&sz=128",
     category: "AI Chatbots & Assistants",
     description: "xAI's maximally truthful AI with real-time knowledge from X platform.",
     pricing: "Freemium",
@@ -107,7 +107,7 @@ const tools = [
   // AI Writing Tools
   {
     name: "Jasper AI",
-    logo: "https://logo.clearbit.com/jasper.ai",
+    logo: "https://www.google.com/s2/favicons?domain=jasper.ai&sz=128",
     category: "AI Writing Tools",
     description: "Enterprise AI content platform for marketing teams with brand voice customization.",
     pricing: "Paid",
@@ -126,7 +126,7 @@ const tools = [
   },
   {
     name: "Copy.ai",
-    logo: "https://logo.clearbit.com/copy.ai",
+    logo: "https://www.google.com/s2/favicons?domain=copy.ai&sz=128",
     category: "AI Writing Tools",
     description: "AI-powered copywriting for blogs, ads, emails, and social media.",
     pricing: "Freemium",
@@ -145,7 +145,7 @@ const tools = [
   },
   {
     name: "Writesonic",
-    logo: "https://logo.clearbit.com/writesonic.com",
+    logo: "https://www.google.com/s2/favicons?domain=writesonic.com&sz=128",
     category: "AI Writing Tools",
     description: "Fast AI writer with SEO optimization, article generator, and chatbot features.",
     pricing: "Freemium",
@@ -166,7 +166,7 @@ const tools = [
   // AI Coding Assistants
   {
     name: "GitHub Copilot",
-    logo: "https://logo.clearbit.com/github.com",
+    logo: "https://www.google.com/s2/favicons?domain=github.com&sz=128",
     category: "AI Coding Assistants",
     description: "AI pair programmer that suggests code in real-time across IDEs.",
     pricing: "Paid",
@@ -186,7 +186,7 @@ const tools = [
   },
   {
     name: "Cursor",
-    logo: "https://logo.clearbit.com/cursor.sh",
+    logo: "https://www.google.com/s2/favicons?domain=cursor.sh&sz=128",
     category: "AI Coding Assistants",
     description: "AI-first code editor with powerful chat, codebase understanding, and editing.",
     pricing: "Freemium",
@@ -205,7 +205,7 @@ const tools = [
   },
   {
     name: "Windsurf",
-    logo: "https://logo.clearbit.com/codeium.com",
+    logo: "https://www.google.com/s2/favicons?domain=codeium.com&sz=128",
     category: "AI Coding Assistants",
     description: "Agentic AI coding experience by Codeium with autonomous capabilities.",
     pricing: "Freemium",
@@ -226,7 +226,7 @@ const tools = [
   // AI Image Generation
   {
     name: "Midjourney",
-    logo: "https://logo.clearbit.com/midjourney.com",
+    logo: "https://www.google.com/s2/favicons?domain=midjourney.com&sz=128",
     category: "AI Image Generation",
     description: "Leading AI art generator known for artistic, high-quality, and creative visuals.",
     pricing: "Paid",
@@ -246,7 +246,7 @@ const tools = [
   },
   {
     name: "DALL·E",
-    logo: "https://logo.clearbit.com/openai.com",
+    logo: "https://www.google.com/s2/favicons?domain=openai.com&sz=128",
     category: "AI Image Generation",
     description: "OpenAI's powerful text-to-image model integrated into ChatGPT.",
     pricing: "Freemium",
@@ -265,7 +265,7 @@ const tools = [
   },
   {
     name: "Adobe Firefly",
-    logo: "https://logo.clearbit.com/adobe.com",
+    logo: "https://www.google.com/s2/favicons?domain=adobe.com&sz=128",
     category: "AI Image Generation",
     description: "Adobe's commercially safe AI image generator integrated with Creative Cloud.",
     pricing: "Freemium",
@@ -286,7 +286,7 @@ const tools = [
   // AI Video Generation & Editing
   {
     name: "Runway",
-    logo: "https://logo.clearbit.com/runwayml.com",
+    logo: "https://www.google.com/s2/favicons?domain=runwayml.com&sz=128",
     category: "AI Video Generation & Editing",
     description: "Professional-grade AI video generation, editing, and motion tools.",
     pricing: "Freemium",
@@ -305,7 +305,7 @@ const tools = [
   },
   {
     name: "Synthesia",
-    logo: "https://logo.clearbit.com/synthesia.io",
+    logo: "https://www.google.com/s2/favicons?domain=synthesia.io&sz=128",
     category: "AI Video Generation & Editing",
     description: "Create realistic AI avatar videos from text scripts for training and marketing.",
     pricing: "Paid",
@@ -324,7 +324,7 @@ const tools = [
   },
   {
     name: "Pika",
-    logo: "https://logo.clearbit.com/pika.art",
+    logo: "https://www.google.com/s2/favicons?domain=pika.art&sz=128",
     category: "AI Video Generation & Editing",
     description: "Fast and fun AI video generator for turning text and images into short clips.",
     pricing: "Freemium",
@@ -345,7 +345,7 @@ const tools = [
   // AI Research & Search
   {
     name: "Perplexity AI",
-    logo: "https://logo.clearbit.com/perplexity.ai",
+    logo: "https://www.google.com/s2/favicons?domain=perplexity.ai&sz=128",
     category: "AI Research & Search",
     description: "AI-powered search engine with real-time web access and cited answers.",
     pricing: "Freemium",
@@ -365,7 +365,7 @@ const tools = [
   },
   {
     name: "Elicit",
-    logo: "https://logo.clearbit.com/elicit.com",
+    logo: "https://www.google.com/s2/favicons?domain=elicit.com&sz=128",
     category: "AI Research & Search",
     description: "AI research assistant for literature review and academic paper analysis.",
     pricing: "Freemium",
@@ -384,7 +384,7 @@ const tools = [
   },
   {
     name: "Consensus",
-    logo: "https://logo.clearbit.com/consensus.app",
+    logo: "https://www.google.com/s2/favicons?domain=consensus.app&sz=128",
     category: "AI Research & Search",
     description: "AI search for scientific research with evidence synthesis.",
     pricing: "Freemium",
@@ -405,7 +405,7 @@ const tools = [
   // Productivity & More
   {
     name: "Notion AI",
-    logo: "https://logo.clearbit.com/notion.so",
+    logo: "https://www.google.com/s2/favicons?domain=notion.so&sz=128",
     category: "AI Productivity Tools",
     description: "AI features built into Notion for summarization, writing, and database automation.",
     pricing: "Freemium",
@@ -424,7 +424,7 @@ const tools = [
   },
   {
     name: "Gamma",
-    logo: "https://logo.clearbit.com/gamma.app",
+    logo: "https://www.google.com/s2/favicons?domain=gamma.app&sz=128",
     category: "AI Presentation Tools",
     description: "AI presentation generator that creates beautiful decks from text prompts.",
     pricing: "Freemium",
@@ -443,7 +443,7 @@ const tools = [
   },
   {
     name: "ElevenLabs",
-    logo: "https://logo.clearbit.com/elevenlabs.io",
+    logo: "https://www.google.com/s2/favicons?domain=elevenlabs.io&sz=128",
     category: "AI Voice & Audio Tools",
     description: "Industry-leading AI voice synthesis and cloning with emotional control.",
     pricing: "Freemium",
@@ -462,7 +462,7 @@ const tools = [
   },
   {
     name: "Zapier AI",
-    logo: "https://logo.clearbit.com/zapier.com",
+    logo: "https://www.google.com/s2/favicons?domain=zapier.com&sz=128",
     category: "AI Automation Tools",
     description: "No-code automation with AI actions connecting thousands of apps.",
     pricing: "Freemium",
@@ -481,7 +481,7 @@ const tools = [
   },
   {
     name: "Teal",
-    logo: "https://logo.clearbit.com/tealhq.com",
+    logo: "https://www.google.com/s2/favicons?domain=tealhq.com&sz=128",
     category: "AI Resume & Career Tools",
     description: "AI resume builder and job tracking platform.",
     pricing: "Freemium",
@@ -500,7 +500,7 @@ const tools = [
   },
   {
     name: "Harvey AI",
-    logo: "https://logo.clearbit.com/harvey.ai",
+    logo: "https://www.google.com/s2/favicons?domain=harvey.ai&sz=128",
     category: "AI Legal Assistants",
     description: "AI assistant purpose-built for legal professionals.",
     pricing: "Paid",
@@ -519,7 +519,7 @@ const tools = [
   },
   {
     name: "Manus AI",
-    logo: "https://logo.clearbit.com/manus.im",
+    logo: "https://www.google.com/s2/favicons?domain=manus.im&sz=128",
     category: "AI Agents",
     description: "Advanced general-purpose AI agent platform.",
     pricing: "Freemium",
@@ -538,7 +538,7 @@ const tools = [
   },
   {
     name: "Glass Health",
-    logo: "https://logo.clearbit.com/glass.health",
+    logo: "https://www.google.com/s2/favicons?domain=glass.health&sz=128",
     category: "AI Healthcare Assistants",
     description: "AI-powered clinical decision support for healthcare.",
     pricing: "Paid",
@@ -557,7 +557,7 @@ const tools = [
   },
   {
     name: "CrowdStrike Charlotte AI",
-    logo: "https://logo.clearbit.com/crowdstrike.com",
+    logo: "https://www.google.com/s2/favicons?domain=crowdstrike.com&sz=128",
     category: "AI Cybersecurity Tools",
     description: "AI-driven cybersecurity threat detection and response.",
     pricing: "Paid",

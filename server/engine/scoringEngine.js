@@ -17,38 +17,49 @@ function normalizeWeights(weightSet) {
 }
 
 // New metadata-based intent matching (Stage 2)
+// Weighted: domain + projectType matter most for relevance. A tool that's generically
+// "Enterprise/Complex/High-budget/High-security" but in the WRONG domain (e.g. a legal
+// assistant showing up for a fintech query) must not be able to outscore a tool that
+// actually serves the right domain just by matching the secondary dimensions.
 function computeIntentMatch(item, intent) {
   if (!item || !item.metadata || !intent) return 0.5; // safe fallback if metadata missing
 
   const fieldMap = [
-    { intentField: 'projectType', metaField: 'projectTypes' },
-    { intentField: 'domain', metaField: 'domains' },
-    { intentField: 'complexity', metaField: 'complexity' },
-    { intentField: 'budget', metaField: 'budget' },
-    { intentField: 'teamSize', metaField: 'teamSize' },
-    { intentField: 'deployment', metaField: 'deployment' },
-    { intentField: 'security', metaField: 'securityLevel' },
+    { intentField: 'domain', metaField: 'domains', weight: 2 },
+    { intentField: 'projectType', metaField: 'projectTypes', weight: 2 },
+    { intentField: 'complexity', metaField: 'complexity', weight: 1 },
+    { intentField: 'budget', metaField: 'budget', weight: 1 },
+    { intentField: 'teamSize', metaField: 'teamSize', weight: 1 },
+    { intentField: 'deployment', metaField: 'deployment', weight: 1 },
+    { intentField: 'security', metaField: 'securityLevel', weight: 1 },
   ];
 
-  let applicableCount = 0;
-  let matchCount = 0;
+  let applicableWeight = 0;
+  let matchedWeight = 0;
 
-  for (const { intentField, metaField } of fieldMap) {
+  for (const { intentField, metaField, weight } of fieldMap) {
     const intentValue = intent[intentField];
     // Skip dimensions where intent didn't specify a real value
     if (!intentValue || intentValue === 'unspecified') continue;
 
-    applicableCount++;
+    applicableWeight += weight;
     const metaArray = Array.isArray(item.metadata[metaField]) ? item.metadata[metaField] : [];
-    if (metaArray.map(v => String(v).toLowerCase()).includes(String(intentValue).toLowerCase())) {
-      matchCount++;
+    const metaLower = metaArray.map(v => String(v).toLowerCase());
+    const intentLower = String(intentValue).toLowerCase();
+
+    if (metaLower.includes(intentLower)) {
+      matchedWeight += weight;
+    } else if (intentField === 'domain' && metaLower.includes('general')) {
+      // "General" tools aren't domain-specialized but still usable — partial credit only,
+      // so they can't beat a tool that actually lists the requested domain.
+      matchedWeight += weight * 0.4;
     }
   }
 
   // If intent had no usable fields at all, fall back to neutral score
-  if (applicableCount === 0) return 0.5;
+  if (applicableWeight === 0) return 0.5;
 
-  return matchCount / applicableCount; // 0 to 1, proportion of matched dimensions
+  return matchedWeight / applicableWeight; // 0 to 1, weighted proportion matched
 }
 
 // Generic weighted scorer
@@ -64,7 +75,8 @@ function weightedScore(item, intent, entityType) {
     case 'model':
       const modelW = normalizeWeights(weights.model);
       const cost = normalizers.normalizeCost(item.costPer1MInput || item.costPer1MOutput || 0);
-      const normCost = cost > 0 ? Math.max(0, 1 - Math.min(cost / 50, 1)) : 0.5; // lower cost better
+      // Free (cost === 0) must score highest (1.0), not neutral. Paid cost scales down from there.
+      const normCost = cost === 0 ? 1 : Math.max(0, 1 - Math.min(cost / 50, 1));
       const perf = (item.scores?.mmlu || item.scores?.reasoning || 0) / 100 || 0.6;
 
       finalScore = 
@@ -78,11 +90,17 @@ function weightedScore(item, intent, entityType) {
     case 'tool':
       const toolW = normalizeWeights(weights.tool);
       const pricingNorm = item.pricing === 'Free' ? 1 : item.pricing === 'Freemium' ? 0.7 : 0.3;
-      const tagRelevance = intent?.entities?.category && item.tags && item.tags.some(t => 
-        t.toLowerCase().includes(intent.entities.category.toLowerCase())) ? 0.9 : 0.4;
+
+      // Real intent signals (old intent?.entities?.category / intent?.intent never existed in this shape)
+      const toolIntentSignals = [intent?.domain, intent?.aiTask, intent?.projectType]
+        .filter(v => v && v !== 'unspecified')
+        .map(v => String(v).toLowerCase());
+      const tagRelevance = (toolIntentSignals.length > 0 && Array.isArray(item.tags))
+        ? (item.tags.some(t => toolIntentSignals.some(sig => t.toLowerCase().includes(sig))) ? 0.9 : 0.4)
+        : 0.5;
 
       finalScore = 
-        ((item.category && intent?.intent ? 0.8 : 0.5) * toolW.categoryMatch || 0) +
+        (intentMatch * toolW.categoryMatch || 0) + // real metadata-based match, not dead field
         (tagRelevance * toolW.tagRelevance || 0) +
         (pricingNorm * toolW.purposeAlign || 0) + // reuse for alignment
         (0.6 * toolW.diversityBonus || 0);
@@ -91,10 +109,19 @@ function weightedScore(item, intent, entityType) {
     case 'stack':
       const stackW = normalizeWeights(weights.stack);
       const coverage = Array.isArray(item.tools) ? Math.min(item.tools.length / 5, 1) : 0;
+
+      // Real budget check (was hardcoded 0.6, never looked at intent.budget or metadata.budget)
+      let budgetFit = 0.6; // neutral default when user didn't specify a budget
+      if (intent?.budget && intent.budget !== 'unspecified') {
+        const budgetArr = Array.isArray(item.metadata?.budget) ? item.metadata.budget : [];
+        const matches = budgetArr.map(b => String(b).toLowerCase()).includes(String(intent.budget).toLowerCase());
+        budgetFit = matches ? 1 : 0.2;
+      }
+
       finalScore = 
         (intentMatch * stackW.roleMatch || 0) +
         (coverage * stackW.coverageScore || 0) +
-        (0.6 * stackW.budgetFit || 0);
+        (budgetFit * stackW.budgetFit || 0);
       break;
 
     case 'workflow':
@@ -108,9 +135,18 @@ function weightedScore(item, intent, entityType) {
 
     case 'prompt':
       const pW = normalizeWeights(weights.prompt);
+
+      // Real intent signals (old intent?.entities?.tool never existed in this shape)
+      const promptIntentSignals = [intent?.domain, intent?.aiTask, intent?.projectType]
+        .filter(v => v && v !== 'unspecified')
+        .map(v => String(v).toLowerCase());
+      const toolAlign = (promptIntentSignals.length > 0 && Array.isArray(item.tags))
+        ? (item.tags.some(t => promptIntentSignals.some(sig => t.toLowerCase().includes(sig))) ? 0.85 : 0.4)
+        : 0.5;
+
       finalScore = 
         (intentMatch * pW.categoryMatch || 0) +
-        ((item.toolName && intent?.entities?.tool ? 0.85 : 0.5) * pW.toolAlign || 0);
+        (toolAlign * pW.toolAlign || 0);
       break;
 
     default:

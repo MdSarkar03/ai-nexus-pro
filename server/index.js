@@ -9,10 +9,12 @@ import workflowsRouter from "./routes/workflows.js";
 import modelsRouter from "./routes/models.js";
 import stacksRouter from "./routes/stacks.js";
 import promptsRouter from "./routes/prompts.js";
+import searchRouter from "./routes/search.js";
 
 // New engine route (CommonJS compatible require for consistency with potential mixed usage)
 import engineRoutes from "./routes/engine.js";
 import architectRoutes from "./routes/architect.js";
+import authRouter from "./routes/auth.js";
 
 dotenv.config({ path: '../.env' });
 
@@ -28,10 +30,12 @@ app.use("/api/workflows", workflowsRouter);
 app.use("/api/models", modelsRouter);
 app.use("/api/stacks", stacksRouter);
 app.use("/api/prompts", promptsRouter);
+app.use("/api/search", searchRouter);
 
 // New Decision Intelligence Engine route
 app.use('/api/engine', engineRoutes);
 app.use('/api/architect', architectRoutes);
+app.use("/api/auth", authRouter);
 
 // Health check
 app.get("/", (req, res) => {
