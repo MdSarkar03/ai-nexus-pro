@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { motion } from "framer-motion";
+import { Sparkles } from "lucide-react";
 import PagePurposeHeader from "../components/PagePurposeHeader";
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
@@ -118,45 +120,55 @@ Focus on modern, production-ready, scalable choices. Use popular tools.`;
   if (selected) return (
     <div className="min-h-screen bg-gray-50 py-10 px-4">
       <div className="max-w-4xl mx-auto">
-        <button onClick={() => setSelected(null)} className="mb-6 flex items-center gap-2 text-[#FF6B35] hover:underline font-medium">
+        <button 
+          onClick={() => setSelected(null)} 
+          className="mb-8 flex items-center gap-2 text-[#FF6B35] hover:text-[#FF8A5C] font-semibold transition-colors group"
+        >
           ← Back to Stacks
         </button>
 
-        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
-          <div className="flex items-center gap-3 mb-3">
-            <span className="bg-[#FF6B35]/10 text-[#FF6B35] text-sm font-semibold px-3 py-1 rounded-full">{selected.role}</span>
-            <span className="bg-gray-100 text-gray-600 text-sm px-3 py-1 rounded-full">{selected.difficulty}</span>
+        <div className="bg-white rounded-3xl shadow-xl p-10 mb-10 border border-gray-100">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="bg-[#FF6B35]/10 text-[#FF6B35] text-sm font-semibold px-4 py-1.5 rounded-2xl">{selected.role}</span>
+            <span className="bg-gray-100 text-gray-600 text-sm px-4 py-1.5 rounded-2xl">{selected.difficulty}</span>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{selected.title}</h1>
-          <p className="text-gray-600 text-lg">{selected.description}</p>
+          <h1 className="text-4xl font-semibold tracking-tight text-gray-900 mb-3">{selected.title}</h1>
+          <p className="text-gray-600 text-lg leading-relaxed">{selected.description}</p>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-6">
           {selected.tools.map((tool, index) => (
-            <div key={index} className="bg-white rounded-2xl shadow-md p-6 flex items-start gap-4 border-l-4 border-[#FF6B35]">
-              <div className="w-10 h-10 bg-[#FF6B35]/10 text-[#FF6B35] rounded-full flex items-center justify-center font-bold shrink-0">
+            <div 
+              key={index} 
+              className="bg-white rounded-3xl shadow-sm p-8 flex items-start gap-6 border-l-4 border-[#FF6B35] hover:border-[#FF8A5C] transition-colors"
+            >
+              <div className="w-12 h-12 bg-gradient-to-br from-[#FF6B35]/10 to-white text-[#FF6B35] rounded-2xl flex items-center justify-center font-semibold text-xl shrink-0 border border-[#FF6B35]/10">
                 {index + 1}
               </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-1">
-                  <h3 className="text-lg font-bold text-gray-900">{tool.toolName}</h3>
-                  <span className="bg-gray-100 text-gray-500 text-xs px-2 py-1 rounded-full">{tool.category}</span>
-                  <a href={tool.toolUrl} target="_blank" rel="noopener noreferrer"
-                    className="bg-[#FF6B35] text-white text-xs px-3 py-1 rounded-full hover:bg-[#FF5722] transition-colors">
+              <div className="flex-1 pt-1">
+                <div className="flex items-center gap-3 mb-3">
+                  <h3 className="text-2xl font-semibold text-gray-900">{tool.toolName}</h3>
+                  <span className="bg-gray-100 text-gray-500 text-xs px-3 py-1 rounded-2xl font-medium">{tool.category}</span>
+                  <a 
+                    href={tool.toolUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="bg-[#FF6B35] text-white text-sm px-5 py-1.5 rounded-2xl hover:bg-[#FF8A5C] transition-all font-medium"
+                  >
                     Visit ↗
                   </a>
                 </div>
-                <p className="text-gray-600 text-sm">{tool.purpose}</p>
+                <p className="text-gray-600">{tool.purpose}</p>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="mt-8 bg-[#FF6B35]/5 border border-[#FF6B35]/20 rounded-2xl p-6">
-          <h3 className="font-bold text-gray-900 mb-2">Tags</h3>
+        <div className="mt-10 bg-[#FF6B35]/5 border border-[#FF6B35]/20 rounded-3xl p-8">
+          <h3 className="font-semibold text-gray-900 mb-4 text-lg">Tags</h3>
           <div className="flex flex-wrap gap-2">
             {selected.tags?.map(tag => (
-              <span key={tag} className="bg-white border border-gray-200 text-gray-600 text-sm px-3 py-1 rounded-full">{tag}</span>
+              <span key={tag} className="bg-white border border-gray-200 text-gray-600 text-sm px-4 py-2 rounded-2xl">{tag}</span>
             ))}
           </div>
         </div>
@@ -166,39 +178,59 @@ Focus on modern, production-ready, scalable choices. Use popular tools.`;
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 py-12 text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Stack Explorer</h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">Discover curated AI tool combinations for your role. See exactly which tools work together and why.</p>
+      {/* Premium Header */}
+      <div className="relative bg-white border-b overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_0.8px,transparent_1px)] [background-size:22px_22px] opacity-70 pointer-events-none"></div>
+        
+        <div className="max-w-7xl mx-auto px-4 py-16 text-center relative">
+          <div className="inline-flex items-center gap-3 mb-6">
+            <div className="w-9 h-9 bg-gradient-to-br from-[#FF6B35] to-orange-600 rounded-2xl flex items-center justify-center">
+              <span className="text-white font-bold text-2xl tracking-tighter">AI</span>
+            </div>
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 tracking-[-2.5px]">
+              Stack Explorer
+            </h1>
+          </div>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">Discover complete production stacks. AI-powered suggestions included.</p>
         </div>
       </div>
-      <PagePurposeHeader
-  title="Individual Tools Solve Tasks. AI Stacks Solve Businesses."
-  description="Explore complete AI technology stacks designed for specific business goals and operational outcomes."
-/>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* === AI RECOMMENDATION SECTION === */}
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 mb-10">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 bg-[#FF6B35]/10 rounded-2xl flex items-center justify-center text-2xl">✨</div>
+      <PagePurposeHeader
+        title="Individual Tools Solve Tasks. AI Stacks Solve Businesses."
+        description="Explore complete AI technology stacks designed for specific business goals and operational outcomes."
+      />
+
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        {/* === PREMIUM AI RECOMMENDATION SECTION === */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-3xl shadow-xl border border-gray-100 p-10 mb-16 relative overflow-hidden"
+        >
+          {/* Subtle glow accent */}
+          <div className="absolute -inset-[1px] bg-gradient-to-r from-[#FF6B35]/10 via-transparent to-[#FF6B35]/10 rounded-[22px] pointer-events-none"></div>
+
+          <div className="flex items-center gap-4 mb-8">
+            <div className="w-14 h-14 bg-gradient-to-br from-[#FF6B35]/10 to-transparent rounded-2xl flex items-center justify-center border border-[#FF6B35]/10">
+              <Sparkles className="w-8 h-8 text-[#FF6B35]" />
+            </div>
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">AI Stack Recommender</h2>
-              <p className="text-gray-600">Describe your project and get a tailored full-stack recommendation</p>
+              <h2 className="text-3xl font-semibold tracking-tight text-gray-900">AI Stack Recommender</h2>
+              <p className="text-gray-600">Describe your project. Get a production-ready full-stack in seconds.</p>
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col md:flex-row gap-5">
             <textarea
               value={projectIdea}
               onChange={(e) => setProjectIdea(e.target.value)}
               placeholder="e.g., AI Resume Builder, E-Commerce platform with payments, Real-time collaborative SaaS tool..."
-              className="flex-1 min-h-[120px] resize-y border border-gray-200 rounded-2xl p-5 focus:outline-none focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] text-gray-700 placeholder:text-gray-400"
+              className="flex-1 min-h-[138px] resize-y border border-gray-200 rounded-3xl p-6 focus:outline-none focus:border-[#FF6B35] focus:ring-4 focus:ring-[#FF6B35]/10 text-gray-700 placeholder:text-gray-400 text-[15px] leading-relaxed transition-all"
             />
             <button
               onClick={generateStack}
               disabled={aiLoading || !projectIdea.trim()}
-              className="md:w-auto px-10 py-4 bg-[#FF6B35] hover:bg-[#FF5722] disabled:bg-gray-300 text-white font-semibold rounded-2xl transition-all flex items-center justify-center gap-3 text-lg shadow-md hover:shadow-lg disabled:cursor-not-allowed"
+              className="md:w-auto px-12 py-4 bg-[#FF6B35] hover:bg-[#FF8A5C] disabled:bg-gray-300 text-white font-semibold rounded-3xl transition-all flex items-center justify-center gap-3 text-lg shadow-xl shadow-[#FF6B35]/30 hover:shadow-2xl disabled:cursor-not-allowed active:scale-[0.985]"
             >
               {aiLoading ? (
                 <>
@@ -212,16 +244,20 @@ Focus on modern, production-ready, scalable choices. Use popular tools.`;
           </div>
 
           {aiError && (
-            <div className="mt-4 p-4 bg-red-50 border border-red-200 text-red-600 rounded-2xl">
+            <div className="mt-6 p-5 bg-red-50 border border-red-200 text-red-600 rounded-2xl text-sm">
               {aiError}
             </div>
           )}
 
           {aiRecommendation && (
-            <div className="mt-8 pt-8 border-t border-gray-100">
-              <h3 className="font-bold text-xl mb-6 flex items-center gap-2 text-gray-900">
-                <span>Recommended Stack</span>
-                <span className="text-sm font-normal text-gray-500">for: {projectIdea}</span>
+            <motion.div 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-10 pt-10 border-t border-gray-100"
+            >
+              <h3 className="font-semibold text-2xl mb-6 flex items-center gap-3 text-gray-900">
+                Recommended Stack
+                <span className="text-sm font-normal text-gray-500 tracking-wide">— {projectIdea}</span>
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -233,63 +269,91 @@ Focus on modern, production-ready, scalable choices. Use popular tools.`;
                   { label: "AI Integration", value: aiRecommendation.ai },
                   { label: "Deployment", value: aiRecommendation.deployment },
                 ].map((item, idx) => (
-                  <div key={idx} className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
-                    <div className="uppercase text-xs tracking-widest text-gray-500 mb-1">{item.label}</div>
-                    <div className="text-lg font-semibold text-gray-900">{item.value}</div>
+                  <div 
+                    key={idx} 
+                    className="bg-white border border-gray-100 hover:border-[#FF6B35]/30 rounded-3xl p-7 transition-all group"
+                  >
+                    <div className="uppercase text-xs tracking-[1px] text-gray-500 mb-2 font-medium">{item.label}</div>
+                    <div className="text-xl font-semibold text-gray-900 leading-snug">{item.value}</div>
                   </div>
                 ))}
               </div>
 
-              <div className="mt-8 bg-[#FF6B35]/5 border border-[#FF6B35]/20 rounded-2xl p-6">
-                <h4 className="font-semibold text-gray-900 mb-3">Why this stack?</h4>
-                <p className="text-gray-700 leading-relaxed">{aiRecommendation.reason}</p>
+              <div className="mt-10 bg-[#FF6B35]/5 border border-[#FF6B35]/20 rounded-3xl p-8">
+                <h4 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  Why this stack?
+                </h4>
+                <p className="text-gray-700 leading-relaxed text-[15px]">{aiRecommendation.reason}</p>
               </div>
-            </div>
+            </motion.div>
           )}
-        </div>
+        </motion.div>
 
-        {/* === EXISTING ROLE FILTERS === */}
-        <div className="flex gap-3 flex-wrap mb-8">
+        {/* Role Filter Pills */}
+        <div className="flex gap-3 flex-wrap mb-10">
           {roles.map(role => (
             <button 
               key={role} 
               onClick={() => setActiveRole(role)}
-              className={`px-4 py-2 rounded-full font-medium transition-colors ${activeRole === role ? "bg-[#FF6B35] text-white" : "bg-white text-gray-600 border border-gray-200 hover:border-[#FF6B35] hover:text-[#FF6B35]"}`}
+              className={`px-6 py-3 rounded-2xl font-semibold text-sm transition-all duration-200 ${
+                activeRole === role 
+                  ? "bg-[#FF6B35] text-white shadow-lg shadow-[#FF6B35]/30" 
+                  : "bg-white text-gray-600 border border-gray-200 hover:border-[#FF6B35] hover:text-[#FF6B35]"
+              }`}
             >
               {role}
             </button>
           ))}
         </div>
 
-        {/* === EXISTING STACK GRID === */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map(stack => (
-            <div 
-              key={stack._id} 
+        {/* Stack Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filtered.map((stack, index) => (
+            <motion.div
+              key={stack._id}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: Math.min(index * 0.03, 0.25) }}
+              whileHover={{ y: -8 }}
               onClick={() => setSelected(stack)}
-              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all cursor-pointer border border-gray-100 hover:border-[#FF6B35] p-6 group"
+              className="bg-white rounded-3xl shadow-sm hover:shadow-2xl border border-gray-100 hover:border-[#FF6B35]/40 p-8 cursor-pointer group transition-all duration-300 flex flex-col"
             >
-              <div className="flex items-center gap-2 mb-3">
-                <span className="bg-[#FF6B35]/10 text-[#FF6B35] text-xs font-semibold px-3 py-1 rounded-full">{stack.role}</span>
-                <span className="bg-gray-100 text-gray-500 text-xs px-3 py-1 rounded-full">{stack.difficulty}</span>
+              <div className="flex items-center gap-3 mb-5">
+                <span className="bg-[#FF6B35]/10 text-[#FF6B35] text-xs font-semibold px-4 py-1.5 rounded-2xl">{stack.role}</span>
+                <span className="bg-gray-100 text-gray-500 text-xs px-4 py-1.5 rounded-2xl">{stack.difficulty}</span>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#FF6B35] transition-colors">{stack.title}</h3>
-              <p className="text-gray-600 text-sm mb-4 line-clamp-2">{stack.description}</p>
 
-              <div className="flex flex-wrap gap-1 mb-4">
+              <h3 className="text-2xl font-semibold tracking-tight text-gray-900 mb-3 group-hover:text-[#FF6B35] transition-colors">
+                {stack.title}
+              </h3>
+              
+              <p className="text-gray-600 text-[15px] line-clamp-3 mb-7 flex-1">
+                {stack.description}
+              </p>
+
+              <div className="flex flex-wrap gap-2 mb-8">
                 {stack.tools?.slice(0, 3).map(tool => (
-                  <span key={tool.toolName} className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">{tool.toolName}</span>
+                  <span 
+                    key={tool.toolName} 
+                    className="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-2xl"
+                  >
+                    {tool.toolName}
+                  </span>
                 ))}
                 {stack.tools?.length > 3 && (
-                  <span className="bg-gray-100 text-gray-500 text-xs px-2 py-1 rounded-full">+{stack.tools.length - 3} more</span>
+                  <span className="bg-gray-100 text-gray-500 text-xs px-3 py-1 rounded-2xl">
+                    +{stack.tools.length - 3} more
+                  </span>
                 )}
               </div>
 
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500">{stack.tools?.length} tools</span>
-                <span className="text-[#FF6B35] font-medium text-sm group-hover:translate-x-1 transition-transform inline-block">View Stack →</span>
+              <div className="flex items-center justify-between text-sm mt-auto pt-4 border-t border-gray-100">
+                <span className="text-gray-500 font-medium">{stack.tools?.length} tools</span>
+                <span className="text-[#FF6B35] font-semibold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                  View Stack →
+                </span>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

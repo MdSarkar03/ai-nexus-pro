@@ -108,7 +108,48 @@ function weightedScore(item, intent, entityType) {
 
     case 'stack':
       const stackW = normalizeWeights(weights.stack);
-      const coverage = Array.isArray(item.tools) ? Math.min(item.tools.length / 5, 1) : 0;
+
+      // coverageScore used to be Math.min(item.tools.length / 5, 1) — but every stack in
+      // this dataset has exactly 6 tools, so that always evaluated to a flat 1.0 for every
+      // single stack. It contributed 30% of the score with zero actual differentiation.
+      // That's the root of the "Enterprise SaaS Stack keeps winning" bias: several stacks
+      // share generic "Enterprise / High budget / Large team" metadata (Enterprise SaaS,
+      // Cybersecurity Platform, Data Engineering Pipeline, DevOps & Cloud Platform all
+      // qualify), so roleMatch alone couldn't reliably separate them and ties kept
+      // resolving toward the same one or two stacks regardless of the actual technical ask.
+      //
+      // Real fix: check whether the stack's own tags / tool names actually relate to the
+      // query (e.g. "kubernetes", "SIEM", "mlflow", "pytorch" appearing in the raw query
+      // should favor DevOps/Cybersecurity/ML stacks over a generic Enterprise SaaS pick),
+      // plus alignment with detected domain/projectType/aiTask.
+      const norm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+      const rawQueryNorm = norm(intent?.rawQuery);
+      const rawQueryWords = new Set(rawQueryNorm.split(' ').filter(Boolean));
+      const stackKeywordSignals = [intent?.domain, intent?.projectType, intent?.aiTask]
+        .filter(v => v && v !== 'unspecified')
+        .map(v => norm(v));
+      const stackTagsNorm = Array.isArray(item.tags) ? item.tags.map(norm) : [];
+      const stackToolNamesNorm = Array.isArray(item.tools)
+        ? item.tools.map(t => norm(t.toolName)).filter(Boolean)
+        : [];
+
+      // Whole-word matching only — a raw "includes" check let short tags like "ai" match
+      // inside unrelated words (e.g. "ai" inside "container"), producing false positives.
+      const allWordsPresent = (phrase) => {
+        const words = phrase.split(' ').filter(Boolean);
+        return words.length > 0 && words.every(w => rawQueryWords.has(w));
+      };
+
+      let relevanceHits = 0;
+      for (const tag of stackTagsNorm) {
+        if (!tag) continue;
+        if (stackKeywordSignals.some(sig => tag.includes(sig) || sig.includes(tag))) relevanceHits++;
+        else if (allWordsPresent(tag)) relevanceHits++;
+      }
+      for (const toolName of stackToolNamesNorm) {
+        if (toolName.length > 2 && allWordsPresent(toolName)) relevanceHits++;
+      }
+      const coverage = Math.min(relevanceHits / 3, 1); // 3+ concrete matches = fully relevant
 
       // Real budget check (was hardcoded 0.6, never looked at intent.budget or metadata.budget)
       let budgetFit = 0.6; // neutral default when user didn't specify a budget
