@@ -34,7 +34,7 @@ export default function StackExplorer() {
 
   useEffect(() => {
     if (activeRole === "All") setFiltered(stacks);
-    else setFiltered(stacks.filter(s => s.role === activeRole));
+    else setFiltered(stacks.filter(s => s.roles?.includes(activeRole)));
   }, [activeRole, stacks]);
 
   const generateStack = async () => {

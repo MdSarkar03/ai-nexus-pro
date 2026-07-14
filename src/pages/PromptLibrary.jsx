@@ -6,7 +6,14 @@ import PagePurposeHeader from "../components/PagePurposeHeader";
 const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
 
-const categories = ["All", "Coding", "Writing", "Research", "Design", "Career", "Learning", "Audio", "Presentation"];
+const categories = [
+  "All",
+  "Software Development", "Software Engineering", "Software Architecture",
+  "Backend Engineering", "Database Engineering", "DevOps & Cloud Engineering",
+  "Performance Engineering", "Cybersecurity", "Business Strategy",
+  "Artificial Intelligence",
+  "Writing", "Design", "Career", "Learning", "Audio", "Presentation", "Research"
+];
 const difficulties = ["All", "Beginner", "Intermediate", "Advanced"];
 
 export default function PromptLibrary() {

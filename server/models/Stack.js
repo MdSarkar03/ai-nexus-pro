@@ -9,6 +9,7 @@ const stackToolSchema = new mongoose.Schema({
 const stackSchema = new mongoose.Schema({
   title: { type: String, required: true },
   role: { type: String, required: true },
+  roles: { type: [String], default: [] },
   description: { type: String, required: true },
   tools: [stackToolSchema],
   tags: [String],

@@ -6,9 +6,11 @@ import PagePurposeHeader from "../components/PagePurposeHeader";
 const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 const categories = [
-  "All", "AI Chatbots", "AI Writing Tools", "Coding Assistants",
-  "Image Generation", "Video Generation", "AI Research",
-  "Productivity Tools", "Presentation Tools", "Voice & Audio Tools", "Automation Tools"
+  "All", "AI Chatbots & Assistants", "AI Writing Tools", "AI Coding Assistants",
+  "AI Image Generation", "AI Video Generation & Editing", "AI Research & Search",
+  "AI Productivity Tools", "AI Presentation Tools", "AI Voice & Audio Tools",
+  "AI Automation Tools", "AI Agents", "AI Cybersecurity Tools",
+  "AI Resume & Career Tools", "AI Legal Assistants", "AI Healthcare Assistants"
 ];
 
 export default function HomePage() {

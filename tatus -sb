@@ -1,0 +1,10 @@
+[33mb868e94[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Accuracy improved to 91.7%, index.css fixed, evaluation report updated
+[33m35f64df[m Fix scoring engine (domain weighting, budget/cost bugs), fix decision trace, add auth backend + search route, CSS/UI fixes across pages
+[33m56aa940[m Fix intentExtractor.js field shape to match scoringEngine's metadata matching
+[33m3605f3f[m Upgrade scoringEngine.js to use real metadata-based intent matching
+[33m64bcfc6[m Add rich metadata to all 73 entries across Tool, LLMModel, Stack, Workflow, Prompt
+[33m3ff0247[m Add metadata to all 15 LLM models
+[33m8e2e5fe[m Add unified metadata schema field to all 5 model schemas
+[33m4fffc19[m Fix pickTop array-return mismatch in engine.js recommend route
+[33mb88059b[m Wire architect route: add architect.js content and mount in index.js
+[33m65e9660[m Fix scoring engine and intent extractor bugs, add architect route, update engine UI components
